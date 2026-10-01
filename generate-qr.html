@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html><head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Uncedo - Generate Taxi QR (Admin)</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+<style>
+body{font-family:Arial;padding:15px;background:#f0f0f0;margin:0}
+.top{background:#006400;color:#FFD700;padding:14px;text-align:center;font-weight:bold}
+.card{background:white;padding:15px;border-radius:12px;margin-top:10px}
+input{width:100%;padding:12px;margin:6px 0;border-radius:8px;border:1px solid #ccc;box-sizing:border-box}
+.btn{width:100%;padding:14px;border:none;border-radius:10px;background:#006400;color:white;font-weight:bold;margin-top:10px}
+#qrcode{display:flex;justify-content:center;margin-top:20px;padding:20px;background:white;border-radius:12px}
+small{color:#666}
+</style>
+</head><body>
+<div class="top">🔐 UNCEDO ADMIN - Generate Taxi QR</div>
+<div class="card">
+<p><small>Fill for each long-distance taxi, then Print QR and stick in taxi window</small></p>
+<input id="reg" placeholder="Registration e.g. HFT 123 EC">
+<input id="permit" placeholder="Permit No e.g. EC-LD-2024-1234">
+<input id="driver" placeholder="Driver Full Name">
+<input id="route" placeholder="Route e.g. PE to Peddie">
+<input id="seats" placeholder="Seats e.g. 22" type="number">
+<label>Permit Expiry Date:</label>
+<input id="expiry" type="date">
+<button class="btn" onclick="gen()">Generate QR Code</button>
+<button class="btn" style="background:#FFD700;color:#006400" onclick="window.print()">🖨️ Print QR</button>
+
+<div id="qrcode"></div>
+<div id="details" style="margin-top:15px;text-align:center;font-size:12px"></div>
+
+<a href="index.html"><button class="btn" style="background:#ccc;color:#000">← Back to App</button></a>
+</div>
+
+<script>
+function gen(){
+ let data={
+  reg:document.getElementById('reg').value,
+  permit:document.getElementById('permit').value,
+  driver:document.getElementById('driver').value,
+  route:document.getElementById('route').value,
+  seats:document.getElementById('seats').value,
+  expiry:document.getElementById('expiry').value
+ };
+ if(!data.reg||!data.permit){alert('Add Reg & Permit');return}
+ let json=JSON.stringify(data);
+ document.getElementById('qrcode').innerHTML="";
+ new QRCode(document.getElementById('qrcode'),{text:json,width:260,height:260,correctLevel:QRCode.CorrectLevel.H});
+ document.getElementById('details').innerHTML=`<b>${data.reg}</b><br>${data.route}<br>Permit: ${data.permit}<br>Exp: ${data.expiry}`;
+}
+</script>
+</body></html>
