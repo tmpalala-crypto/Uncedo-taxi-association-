@@ -1,126 +1,110 @@
 <!DOCTYPE html>
 <html><head>
 <meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Uncedo Service Taxi Association</title>
+<title>Uncedo Service Taxi</title>
 <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 <style>
-body{margin:0;font-family:Arial;background:#f0f0f0}
-.top{background:#002855;color:white;padding:10px;text-align:center;display:flex;align-items:center;justify-content:center;gap:12px}
-.top img{width:55px;height:65px;background:white;border-radius:8px;padding:2px}
-.card{background:#fff;margin:10px;padding:15px;border-radius:14px;box-shadow:0 2px 8px #ccc}
-input,select,textarea{width:100%;padding:12px;margin:6px 0;border-radius:8px;border:1px solid #ccc;box-sizing:border-box}
-.btn{width:100%;padding:14px;border:none;border-radius:10px;font-weight:bold;color:white;background:#002855;margin-top:10px;font-size:16px}
-.yellow{background:#FFD700!important;color:#002855!important}
-#map{height:260px}
-video, #selfie{width:100%;border-radius:10px;background:#000;margin-top:5px}
-.tabs{display:flex;gap:5px;margin:10px}
-.tab{flex:1;padding:10px;border-radius:8px;border:none;font-weight:bold;background:#ddd}
-.tab.active{background:#002855;color:white}
+*{box-sizing:border-box}body{margin:0;font-family:Arial,Helvetica;background:#f5f6f8}
+.header{background:#0a2a5c;color:white;padding:16px;text-align:center;border-bottom:4px solid #FFD700}
+.header img{width:80px;background:white;border-radius:12px;padding:4px}
+.card{background:white;margin:12px;padding:14px;border-radius:16px;box-shadow:0 4px 12px rgba(0,0,0,0.08);border:1px solid #eee}
+.title{font-size:22px;font-weight:900;color:#0a2a5c;margin:5px 0}
+.sub{color:#666;font-size:13px}
+#map{height:180px;border-radius:12px;margin:10px 0;border:2px solid #0a2a5c}
+.row{display:flex;justify-content:space-between;align-items:center;padding:10px 0;border-bottom:1px solid #f0f0f0}
+.row:last-child{border:none}
+.btn{width:100%;padding:14px;border:none;border-radius:12px;font-weight:900;font-size:15px;color:white;background:#0a2a5c;margin-top:10px}
+.btn-gold{background:#FFD700;color:#0a2a5c}
+input,select,textarea{width:100%;padding:12px;margin:6px 0;border-radius:10px;border:1px solid #ddd}
+.tabs{display:flex;gap:8px;margin:12px;padding:0 12px}
+.tab{flex:1;padding:10px;border-radius:10px;border:none;font-weight:bold;background:#e0e7f0;color:#0a2a5c}
+.tab.active{background:#0a2a5c;color:white}
+video{width:100%;border-radius:10px;background:#000}
+.uploadBox{border:2px dashed #0a2a5c;padding:15px;border-radius:12px;text-align:center;background:#f0f6ff;margin:10px 0}
+.badge{padding:5px 10px;border-radius:8px;color:white;font-size:11px;font-weight:bold}
 </style>
 </head><body>
-<div class="top">
-<img src="logo.png">
-<div><b>UNCEDO SERVICE<br>TAXI ASSOCIATION</b><br><small>EST. 1983 PORT ELIZABETH<br>LONG DISTANCE</small></div>
+
+<div class="header">
+<img src="logo.png"><br>
+<b>UNCEDO SERVICE TAXI ASSOCIATION</b><br>
+<small>EST. 1983 PORT ELIZABETH • LONG DISTANCE</small>
 </div>
 
 <div class="tabs">
-<button class="tab active" onclick="showTab('book')">🚕 Book</button>
-<button class="tab" onclick="showTab('complaint')">⚠️ Complain / Compliment</button>
+<button class="tab active" onclick="switchTab('book',this)">🚕 Book Ride</button>
+<button class="tab" onclick="switchTab('complain',this)">⚠️ Complain</button>
+<button class="tab" onclick="switchTab('exec',this)">🔐 Exec</button>
 </div>
 
+<!-- BOOK TAB -->
+<div id="book">
+<div class="card">
+<div class="title">Book Your Ride</div>
+<div class="sub">Long Distance • Port Elizabeth</div>
 <div id="map"></div>
+<div style="background:#fff8e1;padding:8px;border-radius:8px;font-size:12px">📍 <span id="gpsTxt">Getting GPS... Port Elizabeth Taxi Rank, Gqeberha</span></div>
+</div>
 
-<div id="bookTab">
 <div class="card">
-<h3>Request Pickup to Rank</h3>
-<video id="cam" autoplay playsinline></video>
-<button onclick="takePic()" style="padding:8px">📸 Take Selfie (Safety)</button>
-<canvas id="canvas" style="display:none"></canvas><img id="selfie" style="display:none">
+<div class="title" style="font-size:18px">Pickup Request</div>
+<div class="row" style="background:#f5f6f8;border-radius:10px;padding:10px;margin-bottom:10px">
+<div style="display:flex;align-items:center;gap:8px"><div style="width:36px;height:36px;background:#ddd;border-radius:50%;display:flex;align-items:center;justify-content:center">👤</div><small>Selfie Verification • Active</small></div>
+<button onclick="takePic()" style="background:#0a2a5c;color:white;border:none;padding:6px 12px;border-radius:8px;font-weight:bold">Verify Now</button>
+</div>
+<video id="cam" autoplay playsinline style="height:160px;display:none"></video><canvas id="canvas" style="display:none"></canvas><img id="selfie" style="display:none;width:100%;border-radius:10px;margin-top:8px">
+
+<div class="row"><div><b style="font-size:12px">Pickup Location</b><br><small>Current: Port Elizabeth Taxi Rank, Gqeberha</small></div><div>📍</div></div>
+
 <input id="name" placeholder="Your Full Name">
-<input id="phone" placeholder="Phone e.g. 0731234567">
+<input id="phone" placeholder="Phone 073 123 4567">
 <select id="dest">
-<option>Peddie - R120</option><option>Makhanda - R150</option><option>Port Alfred - R180</option>
-<option>East London - R250</option><option>Queenstown - R350</option><option>Mthatha - R400</option>
-<option>Cape Town - R600</option><option>Johannesburg - R750</option><option>Durban - R650</option>
+<option>Gqeberha → Johannesburg - R850</option>
+<option>Gqeberha → Cape Town - R600</option>
+<option>Gqeberha → Durban - R650</option>
+<option>PE → East London - R250</option>
+<option>PE → Mthatha - R400</option>
+<option>PE → Queenstown - R350</option>
 </select>
-<p id="gps" style="font-weight:bold;color:#002855">📍 Getting GPS...</p>
-<button class="btn" onclick="requestPickup()">REQUEST PICKUP</button>
-<a href="verify.html"><button class="btn yellow">🔍 SCAN TAXI QR</button></a>
+
+<div class="row"><div><b style="font-size:12px">Date & Time</b><br><small id="dateNow">Today, Now</small></div><div>📅</div></div>
+
+<button class="btn" onclick="bookRide()">CONFIRM & BOOK RIDE</button>
+<div style="text-align:center;margin-top:8px;font-size:12px;color:#666">Estimated: 9h 30m • 750km</div>
+
+<a href="verify.html" style="text-decoration:none"><button class="btn btn-gold">🔍 VERIFY TAXI QR CODE</button></a>
 </div>
 </div>
 
-<div id="complaintTab" style="display:none">
+<!-- COMPLAIN TAB -->
+<div id="complain" style="display:none">
 <div class="card">
-<h3>⚠️ Complaint / Compliment / Report</h3>
-<select id="type">
-<option value="Complaint">😡 Complaint - Bad Service</option>
-<option value="Compliment">😊 Compliment - Good Driver</option>
-<option value="Overloading">⚠️ Overloading / Reckless</option>
-<option value="Fare">💰 Overcharging</option>
-<option value="Lost Item">🔍 Lost Item in Taxi</option>
+<div class="title">Submit Complaint</div>
+<div class="sub">Complaint Details</div>
+<select id="cType">
+<option>Complaint - Driver was late / fare overcharged</option>
+<option>Compliment - Good Driver</option>
+<option>Overloading / Reckless Driving</option>
+<option>Lost Item</option>
+<option>Overcharging</option>
 </select>
+<textarea id="cDesc" rows="3" placeholder="Describe the issue... Driver was 30min late, fare overcharged"></textarea>
+
+<div class="uploadBox">
+<b>📹 Video Upload Evidence</b><br>
+<small>Drag video or tap to record • Max 30s</small><br><br>
+<input type="file" id="vFile" accept="video/*,image/*" capture="environment" style="border:none">
+<div id="vName" style="font-size:12px;margin-top:8px;background:white;padding:6px;border-radius:6px;display:none">ride_evidence_0934.mp4 • 18s • Ready to upload ✓</div>
+<video id="vPrev" controls style="display:none;margin-top:10px;max-height:200px"></video>
+<img id="iPrev" style="display:none;width:100%;border-radius:10px;margin-top:10px">
+</div>
+<button class="btn" style="background:white;color:#0a2a5c;border:2px solid #0a2a5c">ATTACH PHOTO</button>
+
 <input id="cName" placeholder="Your Name">
 <input id="cPhone" placeholder="Your Phone">
-<input id="taxiReg" placeholder="Taxi Reg No e.g. HFT 123 EC (if you know)">
-<textarea id="message" rows="4" placeholder="What happened? Describe..."></textarea>
-<label>📹 Upload Video Evidence (Optional):</label>
-<input type="file" id="videoFile" accept="video/*,image/*" capture="environment">
-<video id="previewVideo" style="display:none" controls></video>
-<img id="previewImg" style="display:none;width:100%;border-radius:10px">
+<input id="taxiReg" placeholder="Taxi Reg No e.g. HFT 123 EC">
+
 <button class="btn" style="background:#cc0000" onclick="submitComplaint()">SUBMIT COMPLAINT + VIDEO</button>
-<p style="font-size:11px">Your complaint goes to Uncedo Executive Dashboard. Video saved as evidence.</p>
-</div>
-</div>
 
-<div class="card" style="text-align:center">
-<a href="executive.html" style="font-size:13px">🔐 Executive Login → Dashboard</a>
-</div>
-
-<script>
-let lat=-33.874,lng=25.56;
-let map=L.map('map').setView([lat,lng],14);
-L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png').addTo(map);
-let m=L.marker([lat,lng],{draggable:true}).addTo(map);
-function updateGPS(){document.getElementById('gps').innerHTML=`📍 Pin: ${lat.toFixed(5)}, ${lng.toFixed(5)} <br><a href='https://maps.google.com/?q=${lat},${lng}' target='_blank'>Open Maps</a>`}
-m.on('dragend',e=>{lat=e.target.getLatLng().lat; lng=e.target.getLatLng().lng; updateGPS();});
-navigator.geolocation.getCurrentPosition(p=>{lat=p.coords.lat; lng=p.coords.lng; map.setView([lat,lng],16); m.setLatLng([lat,lng]); updateGPS();},()=>updateGPS()); updateGPS();
-navigator.mediaDevices.getUserMedia({video:true}).then(s=>document.getElementById('cam').srcObject=s).catch(()=>{});
-function takePic(){let v=document.getElementById('cam'),c=document.getElementById('canvas'),img=document.getElementById('selfie'); c.width=v.videoWidth; c.height=v.videoHeight; c.getContext('2d').drawImage(v,0,0); img.src=c.toDataURL('image/png'); img.style.display='block';}
-function showTab(t){document.getElementById('bookTab').style.display=t=='book'?'block':'none'; document.getElementById('complaintTab').style.display=t=='complaint'?'block':'none'; document.querySelectorAll('.tab').forEach(b=>b.classList.remove('active')); event.target.classList.add('active');}
-function requestPickup(){let n=document.getElementById('name').value, p=document.getElementById('phone').value; if(!n||!p){alert('Add name & phone');return} let msg=`*UNCEDO PICKUP*%0AName:${n}%0APhone:${p}%0ATo:${document.getElementById('dest').value}%0ALoc:https://maps.google.com/?q=${lat},${lng}`; window.open(`https://wa.me/27731234567?text=${msg}`,'_blank');}
-document.getElementById('videoFile').addEventListener('change',function(e){let file=e.target.files[0]; if(!file)return; let url=URL.createObjectURL(file); if(file.type.startsWith('video')){document.getElementById('previewVideo').src=url; document.getElementById('previewVideo').style.display='block'; document.getElementById('previewImg').style.display='none';}else{document.getElementById('previewImg').src=url; document.getElementById('previewImg').style.display='block'; document.getElementById('previewVideo').style.display='none';}});
-function submitComplaint(){
- let data={
-  type:document.getElementById('type').value,
-  name:document.getElementById('cName').value,
-  phone:document.getElementById('cPhone').value,
-  reg:document.getElementById('taxiReg').value,
-  msg:document.getElementById('message').value,
-  date:new Date().toLocaleString(),
-  gps:`${lat},${lng}`
- };
- if(!data.name||!data.msg){alert('Add name & message');return}
- // Save to localStorage for executive dashboard
- let all=JSON.parse(localStorage.getItem('uncedo_complaints')||'[]');
- // handle video
- let file=document.getElementById('videoFile').files[0];
- if(file){
-  let reader=new FileReader();
-  reader.onload=function(ev){
-   data.evidence=ev.target.result; // base64
-   all.push(data); localStorage.setItem('uncedo_complaints',JSON.stringify(all));
-   alert('Complaint + Video Saved! Executive will see it.');
-   let wa=`*${data.type}*%0AName:${data.name}%0APhone:${data.phone}%0ATaxi:${data.reg}%0AMsg:${data.msg}%0ALocation:${data.gps}%0A_Video attached in dashboard_`;
-   window.open(`https://wa.me/27731234567?text=${wa}`,'_blank');
-  };
-  reader.readAsDataURL(file);
- } else {
-  all.push(data); localStorage.setItem('uncedo_complaints',JSON.stringify(all));
-  alert('Complaint Saved! Executive will see it.');
-  let wa=`*${data.type}*%0AName:${data.name}%0APhone:${data.phone}%0ATaxi:${data.reg}%0AMsg:${data.msg}`;
-  window.open(`https://wa.me/27731234567?text=${wa}`,'_blank');
- }
-}
-</script>
-</body></html>
+<div class="card" style="background:#f0f6ff;margin-top:15
