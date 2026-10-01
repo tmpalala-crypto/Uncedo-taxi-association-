@@ -1,50 +1,8 @@
 <!DOCTYPE html>
-<html><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Uncedo Executive Dashboard</title>
-<style>body{margin:0;font-family:Arial;background:#f0f0f0}
-.top{background:#002855;color:white;padding:12px;text-align:center;display:flex;align-items:center;gap:10px;justify-content:center}
-.top img{width:45px;background:white;border-radius:6px}
-.card{background:white;margin:10px;padding:15px;border-radius:12px;box-shadow:0 2px 8px #ccc}
-input{width:100%;padding:12px;border-radius:8px;border:1px solid #ccc;box-sizing:border-box}
-.btn{padding:10px 15px;border:none;border-radius:8px;background:#002855;color:white;font-weight:bold}
-.evidence{width:100%;border-radius:8px;margin-top:8px;max-height:300px}
-.badge{padding:4px 8px;border-radius:6px;color:white;font-size:12px}
-.complaint{background:#cc0000}.compliment{background:green}.over{background:orange}
-</style></head><body>
-<div class="top"><img src="logo.png"><b>EXECUTIVE DASHBOARD<br><small>Uncedo Complaints & Compliments</small></b></div>
-<div class="card" id="login">
-<h3>🔐 Executive Login</h3>
-<input id="pass" type="password" placeholder="Password: uncedo1983">
-<button class="btn" onclick="login()">Login</button>
-<p style="font-size:11px">Default password: uncedo1983 - change in code</p>
-</div>
-<div id="dash" style="display:none">
-<div class="card">
-<button class="btn" onclick="clearAll()" style="background:red">🗑️ Clear All</button>
-<button class="btn" style="background:green" onclick="location.reload()">🔄 Refresh</button>
-<span id="count"></span>
-</div>
-<div id="list"></div>
-</div>
-<script>
-function login(){if(document.getElementById('pass').value=='uncedo1983'){document.getElementById('login').style.display='none'; document.getElementById('dash').style.display='block'; load();} else alert('Wrong password');}
-function load(){
- let all=JSON.parse(localStorage.getItem('uncedo_complaints')||'[]');
- document.getElementById('count').innerText=` Total: ${all.length}`;
- let html='';
- all.reverse().forEach((c,i)=>{
-  let cls=c.type=='Compliment'?'compliment':(c.type=='Complaint'?'complaint':'over');
-  html+=`<div class="card">
-  <span class="badge ${cls}">${c.type}</span> <small>${c.date}</small>
-  <br><b>${c.name}</b> - ${c.phone}<br>
-  <b>Taxi:</b> ${c.reg||'Not given'} | <b>GPS:</b> ${c.gps}<br>
-  <p>${c.msg}</p>
-  ${c.evidence? (c.evidence.startsWith('data:video')? `<video src="${c.evidence}" controls class="evidence"></video>` : `<img src="${c.evidence}" class="evidence">`) : '<small>No video evidence</small>'}
-  <br><br><a href="https://wa.me/${c.phone}?text=Uncedo executive responding to your ${c.type}" target="_blank"><button class="btn" style="background:green">Reply on WhatsApp</button></a>
-  </div>`;
- });
- document.getElementById('list').innerHTML=html||'<div class=card>No complaints yet</div>';
-}
-function clearAll(){if(confirm('Delete all complaints?')){localStorage.removeItem('uncedo_complaints'); load();}}
-</script>
+<html><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>EXECUTIVE</title>
+<style>*{margin:0;padding:0;box-sizing:border-box;font-family:Arial}body{background:#f2f4f8}.header{background:#0a1931;color:white;text-align:center;padding:14px;border-bottom:4px solid #ffcc00}.card{background:white;margin:12px;border-radius:16px;padding:14px;box-shadow:0 2px 8px rgba(0,0,0,.1)}.input{width:100%;padding:12px;border:1px solid #ddd;border-radius:10px;margin-top:10px}.btn{background:#0a1931;color:white;padding:12px;border:none;border-radius:10px;width:100%;font-weight:bold;margin-top:10px}</style>
+</head><body>
+<div class="header"><h1>UNCEDO EXECUTIVE DASHBOARD</h1><p>0603142346</p></div>
+<div id="loginCard" class="card"><h2>Login</h2><input id="pass" type="password" class="input" placeholder="Password uncedo1983"><button class="btn" onclick="if(document.getElementById('pass').value==='uncedo1983'||document.getElementById('pass').value==='0603142346'){document.getElementById('loginCard').style.display='none';document.getElementById('dashCard').style.display='block'}else alert('Wrong')">LOGIN</button></div>
+<div id="dashCard" class="card" style="display:none"><h2>Dashboard - 0603142346</h2><p>Pending: 3 | Resolved: 12 | Total: 15</p><br><button class="btn" style="background:#25D366" onclick="window.open('https://wa.me/27603142346','_blank')">OPEN WHATSAPP</button><button class="btn" onclick="location.href='index.html'">GO TO CUSTOMER APP</button></div>
 </body></html>
