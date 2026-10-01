@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Uncedo Executive Dashboard</title>
+<style>body{margin:0;font-family:Arial;background:#f0f0f0}
+.top{background:#002855;color:white;padding:12px;text-align:center;display:flex;align-items:center;gap:10px;justify-content:center}
+.top img{width:45px;background:white;border-radius:6px}
+.card{background:white;margin:10px;padding:15px;border-radius:12px;box-shadow:0 2px 8px #ccc}
+input{width:100%;padding:12px;border-radius:8px;border:1px solid #ccc;box-sizing:border-box}
+.btn{padding:10px 15px;border:none;border-radius:8px;background:#002855;color:white;font-weight:bold}
+.evidence{width:100%;border-radius:8px;margin-top:8px;max-height:300px}
+.badge{padding:4px 8px;border-radius:6px;color:white;font-size:12px}
+.complaint{background:#cc0000}.compliment{background:green}.over{background:orange}
+</style></head><body>
+<div class="top"><img src="logo.png"><b>EXECUTIVE DASHBOARD<br><small>Uncedo Complaints & Compliments</small></b></div>
+<div class="card" id="login">
+<h3>🔐 Executive Login</h3>
+<input id="pass" type="password" placeholder="Password: uncedo1983">
+<button class="btn" onclick="login()">Login</button>
+<p style="font-size:11px">Default password: uncedo1983 - change in code</p>
+</div>
+<div id="dash" style="display:none">
+<div class="card">
+<button class="btn" onclick="clearAll()" style="background:red">🗑️ Clear All</button>
+<button class="btn" style="background:green" onclick="location.reload()">🔄 Refresh</button>
+<span id="count"></span>
+</div>
+<div id="list"></div>
+</div>
+<script>
+function login(){if(document.getElementById('pass').value=='uncedo1983'){document.getElementById('login').style.display='none'; document.getElementById('dash').style.display='block'; load();} else alert('Wrong password');}
+function load(){
+ let all=JSON.parse(localStorage.getItem('uncedo_complaints')||'[]');
+ document.getElementById('count').innerText=` Total: ${all.length}`;
+ let html='';
+ all.reverse().forEach((c,i)=>{
+  let cls=c.type=='Compliment'?'compliment':(c.type=='Complaint'?'complaint':'over');
+  html+=`<div class="card">
+  <span class="badge ${cls}">${c.type}</span> <small>${c.date}</small>
+  <br><b>${c.name}</b> - ${c.phone}<br>
+  <b>Taxi:</b> ${c.reg||'Not given'} | <b>GPS:</b> ${c.gps}<br>
+  <p>${c.msg}</p>
+  ${c.evidence? (c.evidence.startsWith('data:video')? `<video src="${c.evidence}" controls class="evidence"></video>` : `<img src="${c.evidence}" class="evidence">`) : '<small>No video evidence</small>'}
+  <br><br><a href="https://wa.me/${c.phone}?text=Uncedo executive responding to your ${c.type}" target="_blank"><button class="btn" style="background:green">Reply on WhatsApp</button></a>
+  </div>`;
+ });
+ document.getElementById('list').innerHTML=html||'<div class=card>No complaints yet</div>';
+}
+function clearAll(){if(confirm('Delete all complaints?')){localStorage.removeItem('uncedo_complaints'); load();}}
+</script>
+</body></html>
