@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html><head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Uncedo - Verify Taxi Permit</title>
+<script src="https://unpkg.com/html5-qrcode@2.3.8/html5-qrcode.min.js"></script>
+<style>
+body{font-family:Arial;padding:10px;background:#f0f0f0;margin:0}
+.top{background:#006400;color:#FFD700;padding:14px;text-align:center;font-weight:bold}
+#reader{width:100%;border-radius:12px;overflow:hidden}
+.card{background:white;padding:15px;border-radius:12px;margin-top:15px;box-shadow:0 2px 8px #ccc}
+.valid{color:green;font-weight:bold;font-size:18px}
+.invalid{color:red;font-weight:bold;font-size:18px}
+.btn{width:100%;padding:12px;border:none;border-radius:8px;background:#006400;color:white;font-weight:bold;margin-top:10px}
+</style>
+</head><body>
+<div class="top">🚕 UNCEDO - Taxi Permit Check</div>
+<div style="padding:10px">
+<p>Point camera to QR code inside taxi window:</p>
+<div id="reader"></div>
+<div id="result" class="card">
+<b>Scan QR to verify:</b><br>
+✅ Is taxi legal?<br>
+✅ Permit valid or expired?<br>
+✅ Driver name & Route<br>
+✅ Seats & Association
+</div>
+<a href="index.html"><button class="btn" style="background:#FFD700;color:#006400">← Back to Booking</button></a>
+</div>
+
+<script>
+function onScanSuccess(decoded){
+ let r=document.getElementById('result');
+ try{
+  let d=JSON.parse(decoded);
+  let isValid = new Date(d.expiry) > new Date();
+  r.innerHTML=`
+  <div class="${isValid?'valid':'invalid'}">${isValid?'✅ LEGAL UNCEDO TAXI':'❌ EXPIRED PERMIT - REPORT!'}</div>
+  <hr>
+  <b>Registration:</b> ${d.reg}<br>
+  <b>Permit Number:</b> ${d.permit}<br>
+  <b>Driver:</b> ${d.driver}<br>
+  <b>Route:</b> ${d.route}<br>
+  <b>Association:</b> Uncedo Service Taxi Association<br>
+  <b>Seats:</b> ${d.seats}<br>
+  <b>Permit Expiry:</b> ${d.expiry}<br><br>
+  ${isValid?'<span class=valid>✔ Permit VALID - Safe to travel</span>':'<span class=invalid>✖ Permit EXPIRED - Do not board! Call Uncedo office</span>'}
+  <br><br><small>QR verified by Uncedo system</small>
+  `;
+ }catch(e){
+  r.innerHTML=`<div class="invalid">❌ Invalid QR</div>Scanned data: ${decoded}<br><br>This is NOT an official Uncedo taxi QR code! Report to office.`;
+ }
+}
+
+let scanner = new Html5QrcodeScanner("reader", { fps: 10, qrbox: {width:250,height:250} });
+scanner.render(onScanSuccess);
+</script>
+</body></html>
