@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html><head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Uncedo Taxi Association - Long Distance</title>
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+<style>
+body{margin:0;font-family:Arial;background:#f0f0f0}
+.top{background:#006400;color:#FFD700;padding:14px;text-align:center;font-weight:bold;font-size:18px}
+#map{height:280px}
+.card{background:#fff;margin:10px;padding:15px;border-radius:14px;box-shadow:0 2px 8px #ccc}
+input,select{width:100%;padding:12px;margin:6px 0;border-radius:8px;border:1px solid #ccc;box-sizing:border-box}
+.btn{width:100%;padding:14px;border:none;border-radius:10px;font-weight:bold;color:white;background:#006400;margin-top:10px;font-size:16px}
+.yellow{background:#FFD700!important;color:#006400!important}
+video{width:100%;border-radius:10px;background:#000}
+#selfie{width:100%;border-radius:10px;margin-top:8px}
+</style>
+</head><body>
+<div class="top">🚕 UNCEDO TAXI ASSOCIATION - Long Distance Pickup</div>
+<div id="map"></div>
+
+<div class="card">
+<h3>Request Pickup to Rank (No Payment Online)</h3>
+<label>📸 Take Selfie for Safety (Required):</label>
+<video id="cam" autoplay playsinline></video>
+<button onclick="takePic()" style="padding:8px;border-radius:6px">Take Photo</button>
+<canvas id="canvas" style="display:none"></canvas>
+<img id="selfie" style="display:none">
+
+<input id="name" placeholder="Your Full Name">
+<input id="phone" placeholder="Your Phone e.g. 0731234567">
+
+<label>Where are you going? (All Uncedo Routes)</label>
+<select id="dest">
+<option>Peddie - R120</option>
+<option>Makhanda (Grahamstown) - R150</option>
+<option>Port Alfred - R180</option>
+<option>East London - R250</option>
+<option>King Williams Town - R220</option>
+<option>Alice - R200</option>
+<option>Fort Beaufort - R180</option>
+<option>Queenstown (Komani) - R350</option>
+<option>Mthatha - R400</option>
+<option>Butterworth - R320</option>
+<option>Dutywa - R340</option>
+<option>Centane - R350</option>
+<option>Willowvale - R370</option>
+<option>Idutywa - R340</option>
+<option>Lusikisiki - R500</option>
+<option>Bizana - R550</option>
+<option>Port St Johns - R520</option>
+<option>Flagstaff - R530</option>
+<option>Matatiele - R600</option>
+<option>Cape Town - R600</option>
+<option>Johannesburg - R750</option>
+<option>Durban - R650</option>
+<option>Bloemfontein - R550</option>
+<option>Kimberley - R600</option>
+</select>
+
+<p id="gps" style="font-weight:bold;color:#006400">📍 Getting GPS...</p>
+
+<label>How many passengers?</label>
+<select id="pax"><option>1 Passenger</option><option>2 Passengers</option><option>3 Passengers</option><option>4 Passengers</option><option>5+ Passengers</option></select>
+
+<button class="btn" onclick="requestPickup()">REQUEST PICKUP CAR - Uncedo Will Organize</button>
+<p style="font-size:11px;text-align:center;color:#666">You pay at Taxi Rank. No online payment. Driver will see your location pin & photo. Be ready!</p>
+</div>
+
+<div class="card">
+<h3>📱 Scan Taxi QR - Check Permit</h3>
+<p style="font-size:12px">Every legal Uncedo taxi has QR. Scan to see if permit is valid, driver name, route.</p>
+<a href="verify.html"><button class="btn yellow">🔍 SCAN TAXI QR CODE</button></a>
+</div>
+
+<script>
+let lat=-33.874, lng=25.56;
+let map=L.map('map').setView([lat,lng],14);
+L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png').addTo(map);
+let m=L.marker([lat,lng],{draggable:true}).addTo(map);
+function updateGPS(){
+ document.getElementById('gps').innerHTML=`📍 Pickup Pin: ${lat.toFixed(5)}, ${lng.toFixed(5)} <br><a href='https://maps.google.com/?q=${lat},${lng}' target='_blank'>Open in Google Maps</a><br><small>Drag pin if not correct</small>`;
+}
+m.on('dragend',e=>{lat=e.target.getLatLng().lat; lng=e.target.getLatLng().lng; updateGPS();});
+navigator.geolocation.getCurrentPosition(p=>{lat=p.coords.lat; lng=p.coords.lng; map.setView([lat,lng],16); m.setLatLng([lat,lng]); updateGPS();},()=>updateGPS());
+updateGPS();
+navigator.mediaDevices.getUserMedia({video:true}).then(s=>document.getElementById('cam').srcObject=s).catch(()=>{});
+function takePic(){
+ let v=document.getElementById('cam'), c=document.getElementById('canvas'), img=document.getElementById('selfie');
+ c.width=v.videoWidth; c.height=v.videoHeight; c.getContext('2d').drawImage(v,0,0);
+ img.src=c.toDataURL('image/png'); img.style.display='block';
+}
+function requestPickup(){
+ let name=document.getElementById('name').value;
+ let phone=document.getElementById('phone').value;
+ if(!name||!phone){alert('Add name & phone');return}
+ let msg=`*UNCEDO PICKUP REQUEST*%0AName: ${name}%0APhone: ${phone}%0ATo: ${document.getElementById('dest').value}%0APax: ${document.getElementById('pax').value}%0ALocation: https://maps.google.com/?q=${lat},${lng}%0ASelfie: Taken ✅%0A*COLLECT TO RANK - NO PAYMENT ONLINE*`;
+ window.open(`https://wa.me/27731234567?text=${msg}`,'_blank');
+ alert('Sent! Uncedo will organize car. Watch your phone - driver coming!');
+}
+</script>
+</body></html>
