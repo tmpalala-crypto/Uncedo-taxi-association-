@@ -1,36 +1,63 @@
-<div id="app" style="max-width:400px;margin:auto;font-family:Arial">
-  <h2 style="background:#0A1931;color:#FFC107;padding:15px">UNCEDO SERVICE • 8 ROUTES</h2>
-  <div id="routes"></div>
-  <div id="seats" style="display:none">
-    <h3>Select Seat - 15 Seats</h3>
-    <div id="seatMap" style="display:grid;grid-template-columns:repeat(5,1fr);gap:10px"></div>
-    <button onclick="confirmBooking()" style="background:#FFC107;width:100%;padding:15px;margin-top:20px;font-weight:bold">CONTINUE • PAY</button>
-  </div>
+<!DOCTYPE html>
+<html>
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>UNCEDO SERVICE - EST 1983</title>
+<style>
+body{margin:0;font-family:Arial;background:#f4f4f4}
+.header{background:#0A1931;color:#FFC107;padding:15px;text-align:center;font-weight:bold;font-size:18px}
+.route{background:white;margin:8px 12px;padding:14px;border-radius:12px;box-shadow:0 2px 5px rgba(0,0,0,0.1);cursor:pointer;display:flex;justify-content:space-between;align-items:center}
+.route:active{background:#FFC107}
+.badge{background:#0A1931;color:#FFC107;padding:3px 8px;border-radius:20px;font-size:10px}
+.fare{font-weight:bold;color:#0A1931}
+.seats{display:grid;grid-template-columns:repeat(5,1fr);gap:8px;padding:15px}
+.seat{background:#ddd;padding:18px;text-align:center;border-radius:10px;cursor:pointer;font-weight:bold}
+.seat.selected{background:#FFC107}
+.seat.taken{background:#888;color:white}
+.paybtn{background:#FFC107;color:#0A1931;width:90%;margin:15px auto;display:block;padding:16px;border:none;border-radius:12px;font-weight:bold;font-size:16px}
+.verified{background:#d4edda;border:2px solid green;color:#155724;padding:20px;border-radius:15px;margin:15px;text-align:center}
+</style>
+</head>
+<body>
+<div class="header">UNCEDO SERVICE • EST 1983 • PORT ELIZABETH • 8 ROUTES + QR</div>
+
+<div id="list">
+<div class="route" onclick="openSeats('PE → Johannesburg','R850','10h 30m')"><div>📍 PE → Johannesburg<br><small>Daily 18:30, 06:00, 22:00</small></div><div><span class="badge">POPULAR</span><br><span class="fare">R850 • 10h 30m</span></div></div>
+<div class="route" onclick="openSeats('PE → Knysna (Garden Route)','R450','3h 20m')"><div>📍 PE → Knysna (Garden Route)<br><small>Daily 09:30, 14:00</small></div><div><span class="badge">GARDEN ROUTE</span><br><span class="fare">R450 • 3h 20m</span></div></div>
+<div class="route" onclick="openSeats('PE → Plett','R480','3h 45m')"><div>📍 PE → Plett<br><small>Daily 12:30</small></div><div><span class="fare">R480 • 3h 45m</span></div></div>
+<div class="route" onclick="openSeats('PE → George','R400','4h 30m')"><div>📍 PE → George</div><div><span class="fare">R400</span></div></div>
+<div class="route" onclick="openSeats('PE → East London','R300','3h 30m')"><div>📍 PE → East London</div><div><span class="fare">R300</span></div></div>
+<div class="route" onclick="openSeats('PE → Mthatha','R600','4h')"><div>📍 PE → Mthatha</div><div><span class="fare">R600</span></div></div>
+<div class="route" onclick="openSeats('PE → Cape Town','R950','7h 45m')"><div>📍 PE → Cape Town<br><small>Scenic</small></div><div><span class="badge">SCENIC</span><br><span class="fare">R950</span></div></div>
+<div class="route" onclick="openSeats('PE → Durban','R900','8h 15m')"><div>📍 PE → Durban</div><div><span class="fare">R900</span></div></div>
 </div>
+
+<div id="seatPage" style="display:none">
+<h3 style="padding:0 15px"><span onclick="back()" style="cursor:pointer">←</span> Seat Selection • <span id="rName"></span> | <span id="rFare"></span></h3>
+<p style="padding:0 15px"><small>Live Pickup: Home → Rank • Driver: John M. • Toyota Quantum • CY 123-455 EC</small></p>
+<div class="seats" id="seatMap"></div>
+<button class="paybtn" onclick="confirmBook()">CONTINUE • PAY <span id="payFare"></span></button>
+</div>
+
+<div id="confirmPage" style="display:none">
+<div class="verified"><div style="font-size:40px">✓</div><h2>BOOKING CONFIRMED!</h2><p>Your ride is booked & driver selfie verified</p><p id="bookDetails" style="background:#FFC107;color:#000;padding:10px;border-radius:8px"></p><p>Driver: John M. • 4.9★ Rating • ID Verified<br>Driver Selfie Live Liveness Check ✓</p></div>
+<div class="verified" style="margin-top:10px"><h3>TAXI VERIFIED</h3><p>Vehicle: Toyota Quantum • CY 123-455 EC<br>Roadworthy ✓ Valid until Dec 2026<br>Insurance ✓ Policy Active<br>Permit ✓ EC-PERM-1983 Active</p><small>QR Scan Verified: <span id="now"></span></small></div>
+</div>
+
 <script>
-const routes = [
- {code:'R1',dest:'Johannesburg',fare:850,time:'10h 30m'},
- {code:'R5',dest:'Knysna (Garden Route)',fare:450,time:'3h 20m'},
- {code:'R6',dest:'Plett',fare:480,time:'3h 45m'},
-];
-let selectedRoute, selectedSeat;
-routes.forEach(r=>{
-  document.getElementById('routes').innerHTML += `<div onclick="selectRoute('${r.code}',${r.fare})" style="border:1px solid #ccc;padding:10px;margin:5px;border-radius:10px">PE → ${r.dest} - R${r.fare} - ${r.time}</div>`;
-});
-function selectRoute(code,fare){
-  selectedRoute=code;
-  document.getElementById('routes').style.display='none';
-  document.getElementById('seats').style.display='block';
-  for(let i=1;i<=15;i++){
-    document.getElementById('seatMap').innerHTML += `<div onclick="selectSeat(${i})" id="s${i}" style="background:#ddd;padding:15px;text-align:center;border-radius:10px;cursor:pointer">${i}</div>`;
-  }
+let selSeat=null;
+function openSeats(name,fare,dur){
+ document.getElementById('list').style.display='none';
+ document.getElementById('seatPage').style.display='block';
+ document.getElementById('rName').innerText=name;
+ document.getElementById('rFare').innerText=fare;
+ document.getElementById('payFare').innerText=fare;
+ let html=''; for(let i=1;i<=15;i++){ let taken=[2,3].includes(i)?' taken':''; html+=`<div class="seat${taken}" id="s${i}" onclick="pick(${i})">${taken?'X':i}</div>`; }
+ document.getElementById('seatMap').innerHTML=html;
 }
-function selectSeat(n){
-  if(selectedSeat) document.getElementById('s'+selectedSeat).style.background='#ddd';
-  selectedSeat=n;
-  document.getElementById('s'+n).style.background='#FFC107';
-}
-function confirmBooking(){
-  alert(`BOOKING CONFIRMED! Route ${selectedRoute} Seat ${selectedSeat} - Show this to driver. Driver selfie verification required.`);
-}
+function pick(n){ if(document.getElementById('s'+n).classList.contains('taken'))return; if(selSeat)document.getElementById('s'+selSeat).classList.remove('selected'); selSeat=n; document.getElementById('s'+n).classList.add('selected'); }
+function back(){ document.getElementById('list').style.display='block'; document.getElementById('seatPage').style.display='none'; }
+function confirmBook(){ if(!selSeat){alert('Select seat first');return;} document.getElementById('seatPage').style.display='none'; document.getElementById('confirmPage').style.display='block'; document.getElementById('bookDetails').innerText=`Route: ${document.getElementById('rName').innerText} • Seat: B${selSeat} • ${document.getElementById('rFare').innerText}`; document.getElementById('now').innerText=new Date().toLocaleString(); }
 </script>
+</body>
+</html>
