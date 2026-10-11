@@ -1,58 +1,42 @@
+<?php
+// verify.php?taxi=CY123455
+$qr = $_GET['taxi'] ?? '';
+$conn = new mysqli("localhost","root","","uncedo_taxi");
+$taxi = $conn->query("SELECT * FROM taxis WHERE qr_code='$qr'")->fetch_assoc();
+
+if(!$taxi){ die("<h1 style='color:red'>NOT REGISTERED - FAKE TAXI!</h1>"); }
+
+$roadworthy_ok = strtotime($taxi['roadworthy_expiry']) > time();
+$insurance_ok = strtotime($taxi['insurance_expiry']) > time();
+$permit_ok = strtotime($taxi['permit_expiry']) > time();
+$all_ok = $roadworthy_ok && $insurance_ok && $permit_ok;
+?>
 <!DOCTYPE html>
-<html><head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Uncedo - Verify Taxi Permit</title>
-<script src="https://unpkg.com/html5-qrcode@2.3.8/html5-qrcode.min.js"></script>
+<html>
+<head><meta name="viewport" content="width=device-width">
+<title>UNCEDO VERIFY</title>
 <style>
-body{font-family:Arial;padding:10px;background:#f0f0f0;margin:0}
-.top{background:#006400;color:#FFD700;padding:14px;text-align:center;font-weight:bold}
-#reader{width:100%;border-radius:12px;overflow:hidden}
-.card{background:white;padding:15px;border-radius:12px;margin-top:15px;box-shadow:0 2px 8px #ccc}
-.valid{color:green;font-weight:bold;font-size:18px}
-.invalid{color:red;font-weight:bold;font-size:18px}
-.btn{width:100%;padding:12px;border:none;border-radius:8px;background:#006400;color:white;font-weight:bold;margin-top:10px}
-</style>
-</head><body>
-<div class="top">🚕 UNCEDO - Taxi Permit Check</div>
-<div style="padding:10px">
-<p>Point camera to QR code inside taxi window:</p>
-<div id="reader"></div>
-<div id="result" class="card">
-<b>Scan QR to verify:</b><br>
-✅ Is taxi legal?<br>
-✅ Permit valid or expired?<br>
-✅ Driver name & Route<br>
-✅ Seats & Association
+body{font-family:Arial;background:#0A1931;color:white;text-align:center;padding:20px}
+.card{background:white;color:black;border-radius:20px;padding:20px;max-width:400px;margin:auto}
+.ok{color:green;font-size:28px;font-weight:bold}
+.bad{color:red;font-size:28px}
+.badge{padding:8px;border-radius:8px;margin:5px;display:inline-block}
+.yes{background:#d4edda;color:#155724} .no{background:#f8d7da;color:#721c24}
+</style></head>
+<body>
+<img src="uncedo-logo.png" width="80">
+<h2>UNCEDO SERVICE EST 1983</h2>
+<div class="card">
+  <div class="<?= $all_ok?'ok':'bad' ?>"><?= $all_ok?'✓ TAXI VERIFIED':'⚠ EXPIRED COMPLIANCE' ?></div>
+  <p><b>Vehicle:</b> <?= $taxi['make_model'] ?> • <?= $taxi['plate'] ?></p>
+  <p><b>Driver:</b> <?= $taxi['driver_name'] ?> • Verified & Licensed</p>
+  <p><b>Registered:</b> UNCEDO SERVICE • PORT ELIZABETH</p>
+  <h3>Compliance & Safety</h3>
+  <div class="badge <?= $roadworthy_ok?'yes':'no' ?>">Roadworthy <?= $roadworthy_ok?'✓ Valid until '.$taxi['roadworthy_expiry']:'✗ EXPIRED' ?></div>
+  <div class="badge <?= $insurance_ok?'yes':'no' ?>">Insurance <?= $insurance_ok?'✓ Active #'.$taxi['insurance_policy']:'✗ EXPIRED' ?></div>
+  <div class="badge <?= $permit_ok?'yes':'no' ?>">Permit <?= $permit_ok?'✓ EC-PERM-1983 Active':'✗ EXPIRED' ?></div>
+  <p><small>QR Scan Verified: <?= date('d M Y • H:i') ?></small></p>
+  <p style="background:#FFC107;padding:10px;border-radius:10px"><b><?= $all_ok?'This taxi is REGISTERED and SAFE':'DO NOT BOARD - Report to Association' ?></b></p>
 </div>
-<a href="index.html"><button class="btn" style="background:#FFD700;color:#006400">← Back to Booking</button></a>
-</div>
-
-<script>
-function onScanSuccess(decoded){
- let r=document.getElementById('result');
- try{
-  let d=JSON.parse(decoded);
-  let isValid = new Date(d.expiry) > new Date();
-  r.innerHTML=`
-  <div class="${isValid?'valid':'invalid'}">${isValid?'✅ LEGAL UNCEDO TAXI':'❌ EXPIRED PERMIT - REPORT!'}</div>
-  <hr>
-  <b>Registration:</b> ${d.reg}<br>
-  <b>Permit Number:</b> ${d.permit}<br>
-  <b>Driver:</b> ${d.driver}<br>
-  <b>Route:</b> ${d.route}<br>
-  <b>Association:</b> Uncedo Service Taxi Association<br>
-  <b>Seats:</b> ${d.seats}<br>
-  <b>Permit Expiry:</b> ${d.expiry}<br><br>
-  ${isValid?'<span class=valid>✔ Permit VALID - Safe to travel</span>':'<span class=invalid>✖ Permit EXPIRED - Do not board! Call Uncedo office</span>'}
-  <br><br><small>QR verified by Uncedo system</small>
-  `;
- }catch(e){
-  r.innerHTML=`<div class="invalid">❌ Invalid QR</div>Scanned data: ${decoded}<br><br>This is NOT an official Uncedo taxi QR code! Report to office.`;
- }
-}
-
-let scanner = new Html5QrcodeScanner("reader", { fps: 10, qrbox: {width:250,height:250} });
-scanner.render(onScanSuccess);
-</script>
-</body></html>
+</body>
+</html>
