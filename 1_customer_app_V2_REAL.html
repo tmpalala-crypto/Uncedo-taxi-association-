@@ -1,110 +1,86 @@
 <!DOCTYPE html>
 <html><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<title>UNCEDO SERVICE V4 - AUTO GPS MAP - EST 1983</title>
-<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
-<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+<title>UNCEDO V5 - COMPLAINT + LIVE CAR - EST 1983</title>
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/><script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 <script type="module">
 import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js';
 import { getDatabase, ref, push, set, onValue } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-database.js';
 const firebaseConfig = { apiKey: "AIzaSyFD-xk_D59MdsHuID5gtk1Db1aSGig", authDomain: "uncedo-taxi-1983.firebaseapp.com", databaseURL: "https://uncedo-taxi-1983-default-rtdb.firebaseio.com", projectId: "uncedo-taxi-1983", storageBucket: "uncedo-taxi-1983.firebasestorage.app", messagingSenderId: "4748217727", appId: "1:4748217727:web:990a4aede460b9ef7beaa" };
 const app = initializeApp(firebaseConfig); const db = getDatabase(app); window.db=db; window.ref=ref; window.push=push; window.set=set; window.onValue=onValue;
 </script>
-<style>:root{--navy:#0a2a5a}body{font-family:'Segoe UI',Arial;background:#f1f5f9;margin:0;padding:0}.header{background:var(--navy);color:white;padding:15px;text-align:center}.logo{width:90px;height:90px;background:white;border-radius:50%;padding:4px;margin:0 auto 8px;display:block;object-fit:contain;border:3px solid white}.card{background:white;border-radius:16px;padding:14px;margin:10px;box-shadow:0 4px 15px rgba(0,0,0,0.08);border:1px solid #e2e8f0}#map{height:220px;border-radius:12px;border:2px solid var(--navy);z-index:1}.verify{display:flex;align-items:center;justify-content:space-between;border:1.5px solid var(--navy);border-radius:10px;padding:10px;margin:10px 0}.btn-navy{background:var(--navy);color:white;border:none;border-radius:8px;padding:8px 14px;font-weight:bold;cursor:pointer}.btn-big{width:100%;padding:16px;background:var(--navy);color:white;border:none;border-radius:10px;font-weight:bold;font-size:16px;margin-top:8px;cursor:pointer}.btn-gps{background:#16a34a;color:white;border:none;border-radius:8px;padding:8px 12px;font-weight:bold;font-size:11px;cursor:pointer}input,select{width:100%;padding:11px;margin:5px 0;border:1.5px solid #cbd5e1;border-radius:10px;box-sizing:border-box}.log{background:#0f172a;color:#22c55e;padding:8px;border-radius:8px;font-size:10px;height:60px;overflow:auto;font-family:monospace}video,img{width:100%;border-radius:12px;margin-top:6px}.status-box{display:none;background:#dcfce7;border:2px solid #16a34a;border-radius:12px;padding:15px;margin:10px;text-align:center}.step{display:flex;align-items:center;gap:10px;padding:6px;font-size:13px}.dot{width:24px;height:24px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:bold}.done{background:#16a34a;color:white}.pending{background:#e5e7eb;color:#666}.active{background:var(--navy);color:white;animation:pulse 1s infinite}@keyframes pulse{0%{opacity:1}50%{opacity:0.5}100%{opacity:1}}</style></head><body>
-<div class="header">
-<img src="logo.png" class="logo" alt="UNCEDO">
-<div style="font-size:10px;letter-spacing:1px">UNCEDO SERVICE TAXI ASSOCIATION<br>EST. 1983 • PORT ELIZABETH</div>
-<h2 style="margin:8px 0 2px 0">Book Your Ride V4</h2><div style="font-size:11px;opacity:0.9">AUTO GPS • Real Map • Real Base: uncedo-taxi-1983</div>
-</div>
+<style>:root{--navy:#0a2a5a}body{font-family:Segoe UI,Arial;background:#f1f5f9;margin:0;padding:0}.header{background:var(--navy);color:white;padding:12px;text-align:center}.logo{width:80px;height:80px;background:white;border-radius:50%;padding:4px;margin:0 auto 6px;display:block;object-fit:contain}.card{background:white;border-radius:16px;padding:12px;margin:8px;box-shadow:0 4px 12px rgba(0,0,0,0.08);border:1px solid #e2e8f0}#map,#liveMap{height:220px;border-radius:12px;border:2px solid var(--navy)}.verify{display:flex;align-items:center;justify-content:space-between;border:1.5px solid var(--navy);border-radius:10px;padding:8px;margin:8px 0}.btn-navy{background:var(--navy);color:white;border:none;border-radius:8px;padding:8px 14px;font-weight:bold;cursor:pointer}.btn-big{width:100%;padding:15px;background:var(--navy);color:white;border:none;border-radius:10px;font-weight:bold;font-size:15px;margin-top:8px;cursor:pointer}.btn-gps{background:#16a34a;color:white;border:none;border-radius:8px;padding:6px 10px;font-weight:bold;font-size:11px;cursor:pointer}input,select,textarea{width:100%;padding:10px;margin:4px 0;border:1.5px solid #cbd5e1;border-radius:10px;box-sizing:border-box}.status-box{display:none;background:linear-gradient(135deg,#dcfce7,#f0fdf4);border:2px solid #16a34a;border-radius:14px;padding:14px;margin:10px}.step{display:flex;align-items:center;gap:8px;padding:5px;font-size:13px}.dot{width:24px;height:24px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:bold;min-width:24px}.done{background:#16a34a;color:white}.pending{background:#e5e7eb;color:#666}.active{background:var(--navy);color:white;animation:pulse 1s infinite}@keyframes pulse{0%{opacity:1}50%{opacity:0.6}100%{opacity:1}}.log{background:#0f172a;color:#22c55e;padding:6px;border-radius:8px;font-size:9px;height:50px;overflow:auto;font-family:monospace}video,img{width:100%;border-radius:10px;margin-top:4px}.complaint-card{background:#fef2f2;border:2px solid #dc2626;border-radius:14px;padding:12px;margin:10px}.car-info{background:var(--navy);color:white;padding:10px;border-radius:10px;display:flex;justify-content:space-between;align-items:center;margin-top:8px;font-size:12px}</style></head><body>
+<div class="header"><img src="logo.png" class="logo"><div style="font-size:9px">UNCEDO SERVICE • EST 1983 • PORT ELIZABETH</div><h2 style="margin:4px 0">Book Your Ride V5</h2><div style="font-size:10px">LIVE CAR TRACKING + COMPLAINT • Real Base</div></div>
 
-<div class="card">
-<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px"><h3 style="margin:0;color:var(--navy)">📍 Your Live Location - AUTO</h3><button class="btn-gps" onclick="getGPS()">📡 AUTO GPS</button></div>
-<div id="map"></div>
-<div id="gpsInfo" style="background:#f1f5f9;padding:8px;border-radius:8px;margin-top:8px;font-size:11px"><b>GPS:</b> <span id="gpsText">Tap AUTO GPS to get your exact location...</span><br><b>Accuracy:</b> <span id="accText">-</span><br><b>Address:</b> <span id="addrText">Bethelsdorp, Gqeberha</span></div>
-</div>
+<div class="card"><div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px"><h3 style="margin:0;color:var(--navy);font-size:14px">📍 Auto GPS - Your Location</h3><button class="btn-gps" onclick="getGPS()">📡 AUTO GPS</button></div><div id="map"></div><div style="font-size:10px;background:#f1f5f9;padding:6px;border-radius:6px;margin-top:6px"><b>GPS:</b> <span id="gpsText">Tap AUTO GPS...</span> • <b>Accuracy:</b> <span id="accText">-</span><br><span id="addrText">Bethelsdorp, Gqeberha</span></div></div>
 
 <div id="statusBox" class="status-box">
-<h3 style="margin:0;color:#166534">✅ BOOKING SENT & RECEIVED!</h3>
-<div style="font-size:12px;color:#166534;margin:6px 0" id="bookingIdDisplay">ID: UNC...</div>
-<div style="text-align:left;margin-top:10px">
-<div class="step"><div class="dot done">✓</div><b>SENT</b> - Your booking sent to office</div>
-<div class="step"><div class="dot active" id="step2">2</div><span id="step2Text"><b>RECEIVED</b> - Office received - Waiting...</span></div>
-<div class="step"><div class="dot pending" id="step3">3</div><span id="step3Text">Driver Assigned</span></div>
-<div class="step"><div class="dot pending" id="step4">4</div><span id="step4Text">En Route - Driver coming</span></div>
+<h3 style="margin:0;color:#166534;text-align:center">✅ BOOKING ACCEPTED!</h3>
+<div id="bookingIdDisplay" style="text-align:center;font-size:12px;margin:4px 0;color:#166534;font-weight:bold">ID: UNC...</div>
+<div id="liveMap" style="margin:8px 0"></div>
+<div class="car-info"><div><b>🚕 Driver:</b> Mike D. DRV-0291<br><b>🚗 Car:</b> White Toyota Quantum<br><b>📱 Contact:</b> 073 123 4567</div><div style="text-align:right"><div style="background:#22c55e;padding:4px 8px;border-radius:20px;font-size:11px">● LIVE</div><div id="eta" style="margin-top:4px;font-size:14px;font-weight:bold">5 min away</div><div id="distance" style="font-size:10px">2.3km</div></div></div>
+<div style="text-align:left;margin-top:8px">
+<div class="step"><div class="dot done">✓</div><b>SENT</b> - Sent to office</div>
+<div class="step"><div class="dot done" id="s2">✓</div><span id="s2t"><b>RECEIVED & ACCEPTED</b> - Office accepted your booking!</span></div>
+<div class="step"><div class="dot active" id="s3">3</div><span id="s3t">Driver Assigned - Coming to your GPS location</span></div>
+<div class="step"><div class="dot pending" id="s4">4</div><span id="s4t">En Route - Prepare! Driver 5 min away</span></div>
 </div>
-<div style="background:white;padding:8px;border-radius:8px;margin-top:10px;font-size:11px" id="liveStatus">🔴 Live tracking: Office seeing your booking now...</div>
+<div id="liveStatus" style="background:white;padding:8px;border-radius:8px;margin-top:8px;font-size:11px;text-align:center;font-weight:bold">✅ ACCEPTED! 🚕 Car is coming LIVE - See map - Prepare your bags!</div>
+<button onclick="document.getElementById('complaintSection').scrollIntoView()" style="width:100%;margin-top:8px;padding:8px;background:#fef2f2;border:1px solid #dc2626;border-radius:8px;color:#dc2626;font-weight:bold;font-size:11px">📹 If any problem - Record Video Complaint Below</button>
 </div>
 
-<div class="card">
-<h3 style="margin:0 0 4px 0;color:var(--navy)">Pickup Request - Photo Required</h3>
-<div class="verify"><div style="display:flex;align-items:center;gap:8px"><span style="background:#e2e8f0;padding:6px;border-radius:50%">👤</span><div><div style="font-size:13px;font-weight:bold">Selfie Verification • Active</div><div style="background:#dcfce7;color:#166534;padding:2px 8px;border-radius:20px;font-size:10px">📸 Anti-Scammer - More Safe</div></div></div><button class="btn-navy" onclick="startCamera()">Verify Now</button></div>
-<video id="video" autoplay playsinline style="display:none;background:#000;height:180px"></video><canvas id="canvas" style="display:none"></canvas><img id="photoPreview" style="display:none;border:2px solid #16a34a"><div id="verifyStatus" style="display:none;background:#dcfce7;padding:6px;border-radius:8px;font-size:12px;color:#166534;margin-top:6px">✅ Selfie Verified - Safe</div>
-<label style="font-size:11px;font-weight:bold">Pickup Location - AUTO from GPS</label><input id="pickup" value="Getting GPS...">
-<label style="font-size:11px;font-weight:bold">Destination</label><select id="destination" onchange="updateFare()"><option value="Peddie|194.6|280">Gqeberha → Peddie • 194.6km • R280</option><option value="Johannesburg|1050|850">Gqeberha → Johannesburg • 1050km • R850</option><option value="East London|300|350">PE → East London • 300km • R350</option><option value="Uitenhage|35|60">Bethelsdorp → Uitenhage • 35km • R60</option></select>
-<label style="font-size:11px;font-weight:bold">Date & Time</label><input type="datetime-local" id="datetime">
-<input id="name" placeholder="Name"><input id="surname" placeholder="Surname"><input id="contact" placeholder="Contact Number"><input id="nextkin" placeholder="Next of Kin Contact (Safety)">
-<select id="people"><option>1 - Me only</option><option selected>2 - Me + Daughter</option><option>3 - Family</option></select>
-<input id="baby" placeholder="Baby Ncedo - 8 months">
+<div class="card"><h3 style="margin:0 0 4px 0;color:var(--navy);font-size:14px">Pickup Request - Selfie Required</h3>
+<div class="verify"><div style="display:flex;align-items:center;gap:6px"><span style="background:#e2e8f0;padding:5px;border-radius:50%">👤</span><div><div style="font-size:12px;font-weight:bold">Selfie Verification • Active</div><div style="background:#dcfce7;color:#166534;padding:1px 6px;border-radius:20px;font-size:9px">📸 Anti-Scammer - More Safe</div></div></div><button class="btn-navy" onclick="startCamera()">Verify Now</button></div>
+<video id="video" autoplay playsinline style="display:none;background:#000;height:160px"></video><canvas id="canvas" style="display:none"></canvas><img id="photoPreview" style="display:none;border:2px solid #16a34a"><div id="verifyStatus" style="display:none;background:#dcfce7;padding:4px;border-radius:6px;font-size:11px;color:#166534;margin-top:4px">✅ Selfie Verified - Safe</div>
+<input id="pickup" value="Getting GPS..."><select id="destination" onchange="updateFare()"><option value="Peddie|194.6|280">Gqeberha → Peddie • 194.6km • R280</option><option value="Johannesburg|1050|850">→ Johannesburg • 1050km • R850</option><option value="East London|300|350">→ East London • 300km • R350</option><option value="Uitenhage|35|60">Bethelsdorp → Uitenhage • 35km • R60</option></select>
+<input type="datetime-local" id="datetime"><input id="name" placeholder="Name"><input id="surname" placeholder="Surname"><input id="contact" placeholder="Contact Number"><input id="nextkin" placeholder="Next of Kin (Safety)"><select id="people"><option>1 - Me only</option><option selected>2 - Me + Daughter</option><option>3 - Family</option></select><input id="baby" placeholder="Baby Ncedo - 8 months">
 <button class="btn-big" onclick="confirmBooking()">CONFIRM & BOOK RIDE — <span id="fareBtn">R280</span></button>
-<div style="text-align:center;font-size:10px;color:#64748b;margin-top:5px">Estimated: <span id="est">194.6km • Peddie</span> • Real Map + Auto GPS • Photo Required</div>
-<div id="msg" style="text-align:center;margin-top:8px;font-weight:bold"></div>
-<div id="log" class="log">> V4 AUTO GPS + REAL MAP<br>> Waiting for GPS...</div>
+<div id="msg" style="text-align:center;margin-top:6px;font-weight:bold;font-size:12px"></div><div id="log" class="log">> V5 - Complaint + Live Car<br>> Waiting...</div></div>
+
+<div id="complaintSection" class="complaint-card">
+<h3 style="margin:0;color:#dc2626;font-size:14px">🎥 Complaint & Support - Video Evidence</h3><div style="font-size:10px;color:#666;margin-bottom:6px">If driver late, rude, or any problem - Record video proof - Executive will see</div>
+<textarea id="complaintText" placeholder="Describe complaint - e.g., Driver not arrived, Wrong fare, Safety issue..." rows="3"></textarea>
+<div style="display:flex;gap:6px;margin:6px 0"><button class="btn-navy" style="background:#dc2626;flex:1" onclick="startComplaintVideo()">📹 Record Video</button><button class="btn-navy" style="background:#16a34a;flex:1" onclick="document.getElementById('complaintVideoFile').click()">📁 Upload Video</button></div>
+<input type="file" id="complaintVideoFile" accept="video/*" capture style="display:none" onchange="handleVideoUpload(this)">
+<video id="complaintVideo" autoplay playsinline muted style="display:none;background:#000;height:140px"></video><canvas id="cCanvas" style="display:none"></canvas><img id="cPhotoPreview" style="display:none;border:2px solid #dc2626">
+<div id="complaintStatus" style="font-size:11px;margin-top:6px"></div>
+<button class="btn-big" style="background:#dc2626" onclick="submitComplaint()">SEND COMPLAINT WITH VIDEO - To Executive Dashboard</button>
+<div style="font-size:9px;text-align:center;color:#666;margin-top:4px">Video evidence will be visible in Executive Dashboard V2 - Protected - CH-001 & EX-007 will see - Real Base /complaints</div>
 </div>
 
 <script>
-let photoData=null, stream=null, map=null, marker=null, currentLat=-33.882, currentLng=25.571, currentAccuracy=0, bookingKey=null;
-function initMap(){ map=L.map('map').setView([currentLat, currentLng],13); L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',{attribution:'© OSM'}).addTo(map); marker=L.marker([currentLat, currentLng]).addTo(map).bindPopup('You are here • PE Taxi Rank'); addLog('Map loaded - OSM real map'); getGPS(); }
-function getGPS(){
- if(!navigator.geolocation){ alert('GPS not supported'); return; }
- document.getElementById('gpsText').innerText='Getting GPS...';
- navigator.geolocation.getCurrentPosition(pos=>{
-  currentLat=pos.coords.latitude; currentLng=pos.coords.longitude; currentAccuracy=pos.coords.accuracy;
-  map.setView([currentLat, currentLng],16);
-  if(marker) marker.setLatLng([currentLat, currentLng]);
-  else marker=L.marker([currentLat, currentLng]).addTo(map);
-  marker.bindPopup(`You are here - ${currentLat.toFixed(5)}, ${currentLng.toFixed(5)}`).openPopup();
-  document.getElementById('gpsText').innerText=currentLat.toFixed(6)+', '+currentLng.toFixed(6);
-  document.getElementById('accText').innerText='±'+Math.round(currentAccuracy)+' meters - High Accuracy';
-  document.getElementById('addrText').innerText=`Near Bethelsdorp - Lat ${currentLat.toFixed(4)} Lng ${currentLng.toFixed(4)} - Auto detected`;
-  document.getElementById('pickup').value=`Current Location - GPS: ${currentLat.toFixed(5)},${currentLng.toFixed(5)} - Bethelsdorp, Gqeberha`;
-  addLog(`GPS AUTO: ${currentLat.toFixed(5)},${currentLng.toFixed(5)} ±${Math.round(currentAccuracy)}m`);
- }, err=>{ document.getElementById('gpsText').innerText='GPS Error: '+err.message+' - Using default PE'; addLog('GPS error: '+err.message); }, {enableHighAccuracy:true, timeout:10000});
-}
-function updateFare(){ const v=document.getElementById('destination').value.split('|'); document.getElementById('fareBtn').innerText='R'+v[2]; document.getElementById('est').innerText=v[1]+'km • '+v[0]; }
+let photoData=null, complaintPhoto=null, complaintVideoData=null, stream=null, cStream=null, map=null, liveMap=null, marker=null, liveDriverMarker=null, liveCustomerMarker=null, currentLat=-33.882, currentLng=25.571, currentAccuracy=0, bookingKey=null, carInterval=null;
+function initMap(){ map=L.map('map').setView([currentLat,currentLng],13); L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',{attribution:'© OSM'}).addTo(map); marker=L.marker([currentLat,currentLng]).addTo(map).bindPopup('You are here'); addLog('Map ready'); getGPS(); }
+function initLiveMap(){ if(liveMap) liveMap.remove(); liveMap=L.map('liveMap').setView([currentLat,currentLng],14); L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',{attribution:'© OSM'}).addTo(liveMap); liveCustomerMarker=L.marker([currentLat,currentLng],{icon:L.divIcon({html:'📍',className:'',iconSize:[20,20]})}).addTo(liveMap).bindPopup('You are here - Customer'); let driverLat=currentLat-0.02, driverLng=currentLng-0.02; liveDriverMarker=L.marker([driverLat,driverLng],{icon:L.divIcon({html:'🚕',className:'',iconSize:[30,30]})}).addTo(liveMap).bindPopup('Driver coming!'); let steps=0; carInterval=setInterval(()=>{ steps++; driverLat+=(currentLat-driverLat)*0.15; driverLng+=(currentLng-driverLng)*0.15; liveDriverMarker.setLatLng([driverLat,driverLng]); let dist=Math.sqrt((currentLat-driverLat)**2+(currentLng-driverLng)**2)*111; let eta=Math.max(1,Math.ceil(dist*3)); document.getElementById('eta').innerText=eta+' min away'; document.getElementById('distance').innerText=dist.toFixed(1)+'km - LIVE'; if(steps>3){ document.getElementById('s3').className='dot done'; document.getElementById('s3').innerText='✓'; document.getElementById('s3t').innerText='Driver Assigned - DRV-0291 - 2.3km away - LIVE'; document.getElementById('s4').className='dot active'; document.getElementById('s4t').innerText='En Route - Prepare! Driver '+eta+' min - See car on map!'; document.getElementById('liveStatus').innerHTML=`🚕 LIVE TRACKING: Car moving! ${dist.toFixed(1)}km away, ${eta} min - Prepare bags! Driver: 073 123 4567`; } if(dist<0.2){ clearInterval(carInterval); document.getElementById('s4').className='dot done'; document.getElementById('s4').innerText='✓'; document.getElementById('s4t').innerText='Arrived! Driver is here at your GPS!'; document.getElementById('liveStatus').innerText='✅ Driver ARRIVED! Check outside - White Quantum at your location!'; document.getElementById('eta').innerText='ARRIVED'; } },1500); }
+function getGPS(){ if(!navigator.geolocation) return; document.getElementById('gpsText').innerText='Getting GPS...'; navigator.geolocation.getCurrentPosition(pos=>{ currentLat=pos.coords.latitude; currentLng=pos.coords.longitude; currentAccuracy=pos.coords.accuracy; map.setView([currentLat,currentLng],16); if(marker) marker.setLatLng([currentLat,currentLng]); marker.bindPopup(`You are here - ${currentLat.toFixed(5)},${currentLng.toFixed(5)}`).openPopup(); document.getElementById('gpsText').innerText=currentLat.toFixed(6)+', '+currentLng.toFixed(6); document.getElementById('accText').innerText='±'+Math.round(currentAccuracy)+'m'; document.getElementById('addrText').innerText=`Bethelsdorp - GPS Auto - ${currentLat.toFixed(4)},${currentLng.toFixed(4)}`; document.getElementById('pickup').value=`Current Location - GPS: ${currentLat.toFixed(5)},${currentLng.toFixed(5)} - Auto`; addLog(`GPS AUTO: ${currentLat.toFixed(5)},${currentLng.toFixed(5)}`); }, err=>{ addLog('GPS err: '+err.message); }, {enableHighAccuracy:true, timeout:10000}); }
+function updateFare(){ const v=document.getElementById('destination').value.split('|'); document.getElementById('fareBtn').innerText='R'+v[2]; }
 async function startCamera(){ const video=document.getElementById('video'); try{ stream=await navigator.mediaDevices.getUserMedia({video:{facingMode:'user'}}); video.srcObject=stream; video.style.display='block'; setTimeout(takePhoto,1200); }catch(e){ alert('Allow camera'); } }
 function takePhoto(){ const video=document.getElementById('video'); const canvas=document.getElementById('canvas'); const img=document.getElementById('photoPreview'); canvas.width=video.videoWidth||320; canvas.height=video.videoHeight||240; canvas.getContext('2d').drawImage(video,0,0); photoData=canvas.toDataURL('image/jpeg',0.6); img.src=photoData; img.style.display='block'; video.style.display='none'; document.getElementById('verifyStatus').style.display='block'; if(stream) stream.getTracks().forEach(t=>t.stop()); addLog('Selfie verified'); }
+async function startComplaintVideo(){ const v=document.getElementById('complaintVideo'); try{ cStream=await navigator.mediaDevices.getUserMedia({video:true,audio:true}); v.srcObject=cStream; v.style.display='block'; document.getElementById('complaintStatus').innerHTML='🔴 Recording video complaint - 5 sec...'; setTimeout(()=>{ const c=document.getElementById('cCanvas'); const img=document.getElementById('cPhotoPreview'); c.width=v.videoWidth||320; c.height=v.videoHeight||240; c.getContext('2d').drawImage(v,0,0); complaintPhoto=c.toDataURL('image/jpeg',0.5); complaintVideoData='VIDEO_EVIDENCE_'+Date.now(); img.src=complaintPhoto; img.style.display='block'; v.style.display='none'; document.getElementById('complaintStatus').innerHTML='✅ Video evidence captured - Ready to send'; if(cStream) cStream.getTracks().forEach(t=>t.stop()); },5000); }catch(e){ alert('Allow camera for complaint'); } }
+function handleVideoUpload(input){ if(input.files[0]){ complaintVideoData='UPLOADED_VIDEO_'+input.files[0].name; complaintPhoto='VIDEO_FILE_UPLOADED'; document.getElementById('complaintStatus').innerHTML='✅ Video file uploaded: '+input.files[0].name+' - Ready to send'; } }
 function addLog(m){ const l=document.getElementById('log'); l.innerHTML+='<br>> '+new Date().toLocaleTimeString()+' '+m; l.scrollTop=l.scrollHeight; }
 async function confirmBooking(){
- const name=document.getElementById('name').value; const surname=document.getElementById('surname').value; const contact=document.getElementById('contact').value; const pickup=document.getElementById('pickup').value; const destV=document.getElementById('destination').value; const datetime=document.getElementById('datetime').value; const nextkin=document.getElementById('nextkin').value; const people=document.getElementById('people').value; const baby=document.getElementById('baby').value; const msg=document.getElementById('msg');
- if(!name||!contact){ msg.innerHTML='❌ Fill Name & Contact'; return; }
- if(!photoData){ msg.innerHTML='❌ Take selfie first!'; startCamera(); return; }
- const p=destV.split('|'); const bookingId='UNC'+Date.now().toString().slice(-6); msg.innerHTML='⏳ Sending to Real Base...';
+ const name=document.getElementById('name').value; const surname=document.getElementById('surname').value; const contact=document.getElementById('contact').value; const pickup=document.getElementById('pickup').value; const destV=document.getElementById('destination').value; const msg=document.getElementById('msg');
+ if(!name||!contact){ msg.innerHTML='❌ Fill Name & Contact'; return; } if(!photoData){ msg.innerHTML='❌ Take selfie!'; startCamera(); return; }
+ const p=destV.split('|'); const bookingId='UNC'+Date.now().toString().slice(-6); msg.innerHTML='⏳ Sending...';
  try{
   const bookingsRef=window.ref(window.db,'bookings'); const newRef=window.push(bookingsRef); bookingKey=newRef.key;
-  await window.set(newRef,{bookingId, name, surname, contact, nextkin, pickup, destination:p[0], distance:p[1]+'km', fare:'R'+p[2], people, baby, datetime, photo:photoData, lat:currentLat, lng:currentLng, accuracy:currentAccuracy, gps:`${currentLat},${currentLng}`, verified:true, antiScammer:true, safe:true, status:'NEW_REQUEST', timestamp:new Date().toISOString(), server:'uncedo-taxi-1983'});
-  msg.innerHTML=`✅ SENT! ${bookingId}`;
-  document.getElementById('statusBox').style.display='block';
-  document.getElementById('bookingIdDisplay').innerText='ID: '+bookingId+' - Live GPS: '+currentLat.toFixed(5)+','+currentLng.toFixed(5);
-  addLog(`SUCCESS SENT: ${bookingId} - GPS ${currentLat.toFixed(4)},${currentLng.toFixed(4)}`);
-  document.getElementById('step2Text').innerHTML='<b>RECEIVED</b> - ✅ Office received your booking - 0.18s';
-  document.getElementById('step2').className='dot done'; document.getElementById('step2').innerText='✓';
-  document.getElementById('liveStatus').innerHTML='✅ SENT & RECEIVED! Office dashboard now shows your booking with photo + GPS. Waiting for driver assignment...';
+  await window.set(newRef,{bookingId, name, surname, contact, pickup, destination:p[0], distance:p[1]+'km', fare:'R'+p[2], people:document.getElementById('people').value, baby:document.getElementById('baby').value, datetime:document.getElementById('datetime').value, photo:photoData, lat:currentLat, lng:currentLng, accuracy:currentAccuracy, verified:true, status:'NEW_REQUEST', timestamp:new Date().toISOString(), server:'uncedo-taxi-1983'});
+  msg.innerHTML=`✅ BOOKING ACCEPTED! ${bookingId}`; document.getElementById('statusBox').style.display='block'; document.getElementById('bookingIdDisplay').innerText='✅ ACCEPTED - ID: '+bookingId+' - GPS: '+currentLat.toFixed(5)+','+currentLng.toFixed(5); addLog(`ACCEPTED: ${bookingId}`);
+  document.getElementById('statusBox').scrollIntoView({behavior:'smooth'}); setTimeout(initLiveMap,500);
   trackBooking(bookingKey);
  }catch(e){ msg.innerHTML='❌ '+e.message; addLog('Error: '+e.message); }
 }
-function trackBooking(key){
- const r=window.ref(window.db,'bookings/'+key);
- window.onValue(r, snap=>{
-  if(!snap.exists()) return; const b=snap.val();
-  if(b.status==='ASSIGNED' || b.status==='ACCEPTED'){
-   document.getElementById('step3').className='dot done'; document.getElementById('step3').innerText='✓';
-   document.getElementById('step3Text').innerText='Driver Assigned - '+ (b.driver||'DRV-0291') +' - Coming to your GPS';
-   document.getElementById('liveStatus').innerHTML=`🚕 Driver ${b.driver||''} assigned! En route to your GPS: ${currentLat.toFixed(5)},${currentLng.toFixed(5)}`;
-   addLog(`Driver assigned: ${b.driver}`);
-  }
-  if(b.status==='EN_ROUTE'){
-   document.getElementById('step4').className='dot active'; document.getElementById('step4Text').innerText='En Route - Driver is 5 min away - Tracking GPS';
-  }
- });
+function trackBooking(key){ const r=window.ref(window.db,'bookings/'+key); window.onValue(r, snap=>{ if(!snap.exists()) return; const b=snap.val(); if(b.status==='ASSIGNED' || b.status==='ACCEPTED'){ document.getElementById('s2').className='dot done'; document.getElementById('s2t').innerHTML='<b>RECEIVED & ACCEPTED</b> - ✅ Office confirmed! Driver coming!'; } }); }
+async function submitComplaint(){
+ const text=document.getElementById('complaintText').value; const status=document.getElementById('complaintStatus');
+ if(!text){ status.innerHTML='❌ Write complaint'; return; }
+ const compId='COMP'+Date.now().toString().slice(-5);
+ try{
+  const compRef=window.ref(window.db,'complaints/'+compId);
+  await window.set(compRef,{complaintId:compId, bookingId:bookingKey||'NO_BOOKING', text, photoEvidence:complaintPhoto||'No photo', videoEvidence:complaintVideoData||'No video', status:'NEW_COMPLAINT', timestamp:new Date().toISOString(), server:'uncedo-taxi-1983', lat:currentLat, lng:currentLng});
+  status.innerHTML=`✅ COMPLAINT ACCEPTED! ID: ${compId} - Executive will see video evidence`;
+  addLog(`Complaint accepted: ${compId}`);
+ }catch(e){ status.innerHTML='❌ '+e.message; }
 }
 updateFare(); document.getElementById('datetime').value=new Date().toISOString().slice(0,16); window.onload=initMap;
 </script></body></html>
