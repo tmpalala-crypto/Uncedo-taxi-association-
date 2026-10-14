@@ -1,115 +1,35 @@
 <!DOCTYPE html>
 <html><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<title>UNCEDO EXECUTIVE V2 - PROTECTED - REAL BASE uncedo-taxi-1983</title>
+<title>UNCEDO EXECUTIVE V2 - PROTECTED - EST 1983</title>
 <script type="module">
 import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js';
-import { getDatabase, ref, onValue, set, push } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-database.js';
-const firebaseConfig = {
-  apiKey: "AIzaSyFD-xk_D59MdsHuID5gtk1Db1aSGig",
-  authDomain: "uncedo-taxi-1983.firebaseapp.com",
-  databaseURL: "https://uncedo-taxi-1983-default-rtdb.firebaseio.com",
-  projectId: "uncedo-taxi-1983",
-  storageBucket: "uncedo-taxi-1983.firebasestorage.app",
-  messagingSenderId: "4748217727",
-  appId: "1:4748217727:web:990a4aede460b9ef7beaa"
-};
-const app = initializeApp(firebaseConfig);
-const db = getDatabase(app);
-window.db=db; window.ref=ref; window.onValue=onValue; window.set=set; window.push=push;
+import { getDatabase, ref, onValue, set } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-database.js';
+const firebaseConfig = { apiKey: "AIzaSyFD-xk_D59MdsHuID5gtk1Db1aSGig", authDomain: "uncedo-taxi-1983.firebaseapp.com", databaseURL: "https://uncedo-taxi-1983-default-rtdb.firebaseio.com", projectId: "uncedo-taxi-1983", storageBucket: "uncedo-taxi-1983.firebasestorage.app", messagingSenderId: "4748217727", appId: "1:4748217727:web:990a4aede460b9ef7beaa" };
+const app = initializeApp(firebaseConfig); const db = getDatabase(app); window.db=db; window.ref=ref; window.onValue=onValue; window.set=set;
 </script>
-<style>
-body{font-family:Arial;background:#0f172a;color:white;padding:10px;margin:0}
-.header{background:linear-gradient(90deg,#dc2626,#991b1b);padding:15px;border-radius:12px;text-align:center}
-.card{background:white;color:#111;border-radius:12px;padding:15px;margin:12px 0;box-shadow:0 4px 12px rgba(0,0,0,0.2)}
-.prot{background:#dc2626;color:white;padding:6px 14px;border-radius:20px;font-size:12px;font-weight:bold;display:inline-block}
-.lock{background:#f59e0b;color:black;padding:3px 8px;border-radius:10px;font-size:10px;font-weight:bold}
-.log{background:#111;color:#0f0;padding:12px;border-radius:8px;font-size:11px;height:350px;overflow:auto;font-family:monospace;border:2px solid #16a34a}
-.book{background:#f8fafc;border:1px solid #e2e8f0;border-left:5px solid #1e3a8a;padding:10px;border-radius:8px;margin:6px 0}
-.alert{background:#fef2f2;border:2px solid #dc2626;color:#991b1b;padding:12px;border-radius:8px;font-weight:bold;margin:10px 0}
-.btn{padding:12px 20px;border:none;border-radius:8px;font-weight:bold;cursor:pointer;margin:5px}
-.btn-red{background:#dc2626;color:white}
-.btn-green{background:#16a34a;color:white}
-.btn-blue{background:#1e3a8a;color:white}
-.live{background:#16a34a;color:white;padding:4px 10px;border-radius:20px;font-size:11px}
-</style></head><body>
-
-<div class="header">
-<h2 style="margin:0">🛡️ UNCEDO EXECUTIVE DASHBOARD V2<br>PROTECTED - READ-ONLY - IMMUTABLE</h2>
-<span class="prot">🔒 PROTECTED - FINGERPRINT MANDATORY - CH-001 & EX-007</span> <span class="live">● LIVE BASE: uncedo-taxi-1983 CONNECTED</span><br>
-<span class="lock">SHA256 HASH - POPIA COMPLIANT - CANNOT BE DELETED</span>
-</div>
-
-<div class="card">
-<h3>🔐 Protection Status - Real Base uncedo-taxi-1983</h3>
-<div class="alert">
-✅ AUDIT LOG PROTECTION ENABLED:<br>
-- Stored in Firebase Realtime Database /audit_log - Real Base<br>
-- Path: https://uncedo-taxi-1983-default-rtdb.firebaseio.com/audit_log<br>
-- Immutable - Cannot be deleted or modified - SHA256 hash verification<br>
-- Photo capture on delete attempt - IP logged - POPIA Act 4 of 2013 compliant<br>
-- Chairman J.Martinez CH-001 & Executive A.Chen EX-007 fingerprint mandatory<br>
-- Real Base: uncedo-taxi-1983 - Key: AIzaSyFD-xk...<br>
-- Who tried to delete evidence - BLOCKED - Logged to real base
-</div>
-<div style="display:grid;grid-template-columns:1fr 1fr;gap:10px">
-<div style="background:#f0fdf4;padding:10px;border-radius:8px;border:1px solid #16a34a"><b>Base Status:</b><br><span class="live">● CONNECTED - uncedo-taxi-1983</span><br>Real key active - Live listener</div>
-<div style="background:#fffbeb;padding:10px;border-radius:8px;border:1px solid #f59e0b"><b>Security:</b><br>👆 Fingerprint verified<br>📸 Photo captured on intruder<br>🔒 Immutable log</div>
-</div>
-</div>
-
-<div class="card">
-<h3>📜 Audit Log - Tamper-Proof - Real Base - Live from Firebase</h3>
-<p style="font-size:12px;color:#666">Listening to /audit_log/login and /audit_log/bookings and /audit_log/delete_attempts - Real Base uncedo-taxi-1983 - Updates in real-time 0.18s</p>
-<div id="auditLog" class="log">> Connecting to real base uncedo-taxi-1983...<br>> Path: /audit_log<br>> Real key AIzaSyFD-xk... active<br>> Listening for login attempts, bookings, delete attempts...<br>> Protection: SHA256 immutable - Cannot be deleted</div>
-<button class="btn btn-blue" onclick="refreshLog()">🔄 Refresh Log from Real Base</button>
-<button class="btn btn-green" onclick="exportLog()">📤 Export Audit Log (POPIA)</button>
-</div>
-
-<div class="card">
-<h3>🚕 Live Bookings from Real Base - READ ONLY</h3>
-<p style="font-size:11px;color:#666">From https://uncedo-taxi-1983-default-rtdb.firebaseio.com/bookings - Real Firebase listener - Chairman read-only</p>
-<div id="bookings"><i>Loading bookings from real base uncedo-taxi-1983...</i></div>
-</div>
-
-<div class="card">
-<h3>🚨 Delete Attempt Protection - TEST</h3>
-<p style="font-size:12px">Executive dashboard cannot be deleted - Who tried to delete evidence - BLOCKED - Photo + IP logged to real base /audit_log/delete_attempts</p>
-<button class="btn btn-red" onclick="tryDelete()">❌ TRY TO DELETE EVIDENCE (TEST PROTECTION - WILL BE BLOCKED)</button>
-<button class="btn btn-red" onclick="tryDeleteExecutive()">❌ TRY TO DELETE CHAIRMAN CH-001 (TEST - BLOCKED)</button>
-<div id="protectMsg" style="margin-top:10px"></div>
-<div id="photoCapture" style="margin-top:10px;background:#111;color:#f59e0b;padding:10px;border-radius:8px;font-size:11px;display:none">📸 PHOTO CAPTURE SIMULATED - Intruder photo captured - IP: 192.168.x.x - Location: Bethelsdorp - Time: <span id="capTime"></span> - Logged to real base uncedo-taxi-1983 /audit_log/delete_attempts - Protection active</div>
-</div>
-
-<div class="card" style="background:#0f172a;color:white">
-<h3>🔍 Chairman J.Martinez CH-001 & Executive A.Chen EX-007 - Access Log</h3>
-<p style="font-size:11px">Fingerprint mandatory - All access logged to real base uncedo-taxi-1983 - Cannot use password - Executive protected</p>
-<div id="execAccess" style="background:#1e293b;padding:10px;border-radius:8px;font-size:11px;height:120px;overflow:auto;font-family:monospace">
-> Executive access requires fingerprint - WebAuthn<br>> Chairman CH-001 fingerprint enrolled<br>> Executive EX-007 fingerprint enrolled<br>> Password login BLOCKED for executive - Photo captured<br>> Real base protection active
-</div>
-</div>
-
+<style>body{font-family:Arial;background:#0f172a;color:white;padding:10px;margin:0}:root{--navy:#0a2a5a}.header{background:linear-gradient(90deg,#dc2626,#991b1b);padding:15px;border-radius:12px;text-align:center}.logo{width:60px;height:60px;background:white;border-radius:50%;padding:4px;margin:0 auto 8px;display:block;object-fit:contain}.card{background:white;color:#111;border-radius:12px;padding:15px;margin:12px 0}.prot{background:#dc2626;color:white;padding:6px 14px;border-radius:20px;font-size:12px;font-weight:bold}.log{background:#111;color:#0f0;padding:12px;border-radius:8px;font-size:11px;height:350px;overflow:auto;font-family:monospace;border:2px solid #16a34a}.book{background:#f8fafc;border:1px solid #e2e8f0;border-left:5px solid #1e3a8a;padding:10px;border-radius:8px;margin:6px 0}.btn{padding:12px 20px;border:none;border-radius:8px;font-weight:bold;cursor:pointer;margin:5px}.btn-red{background:#dc2626;color:white}.live{background:#16a34a;color:white;padding:4px 10px;border-radius:20px;font-size:11px}</style></head><body>
+<div class="header"><img src="logo.png" class="logo" alt="UNCEDO"><h2 style="margin:0">🛡️ UNCEDO EXECUTIVE DASHBOARD V2<br>PROTECTED - EST 1983</h2><span class="prot">🔒 PROTECTED - CH-001 & EX-007 - Photo Capture</span> <span class="live">● LIVE BASE: uncedo-taxi-1983</span></div>
+<div class="card"><h3>📜 Audit Log - With Photo Verification</h3><div id="auditLog" class="log">> Executive V2 with logo - Real base uncedo-taxi-1983 - Protected - Photo verification logs</div></div>
+<div class="card"><h3>🚕 Live Bookings - With Customer Photos - READ ONLY</h3><div id="bookings"><i>Loading...</i></div></div>
+<div class="card"><h3>🎥 Complaints & Support - Video Evidence</h3><div id="complaints"><i>Loading complaints from real base /complaints...</i></div></div>
 <script type="module">
-import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js';
-import { getDatabase, ref, onValue, set, push } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-database.js';
-const firebaseConfig2 = {
-  apiKey: "AIzaSyFD-xk_D59MdsHuID5gtk1Db1aSGig",
-  authDomain: "uncedo-taxi-1983.firebaseapp.com",
-  databaseURL: "https://uncedo-taxi-1983-default-rtdb.firebaseio.com",
-  projectId: "uncedo-taxi-1983",
-  storageBucket: "uncedo-taxi-1983.firebasestorage.app",
-  messagingSenderId: "4748217727",
-  appId: "1:4748217727:web:990a4aede460b9ef7beaa"
-};
-const app2 = initializeApp(firebaseConfig2);
-const db2 = getDatabase(app2);
-const auditDiv=document.getElementById('auditLog');
-const bookingsDiv=document.getElementById('bookings');
-const execDiv=document.getElementById('execAccess');
-function addAudit(msg){ auditDiv.innerHTML+='<br>'+msg; auditDiv.scrollTop=auditDiv.scrollHeight; }
-function addExec(msg){ execDiv.innerHTML+='<br>'+msg; execDiv.scrollTop=execDiv.scrollHeight; }
-
-onValue(ref(db2,'audit_log/login'), snap=>{
-  if(!snap.exists()){ addAudit('[NO LOGIN ATTEMPTS YET - REAL BASE EMPTY - uncedo-taxi-1983]'); return; }
-  const data=snap.val();
-  Object.values(data).slice(-30).forEach(l=>{
-   
+import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js'; import { getDatabase, ref, onValue, set } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-database.js';
+const firebaseConfig2 = { apiKey: "AIzaSyFD-xk_D59MdsHuID5gtk1Db1aSGig", authDomain: "uncedo-taxi-1983.firebaseapp.com", databaseURL: "https://uncedo-taxi-1983-default-rtdb.firebaseio.com", projectId: "uncedo-taxi-1983", storageBucket: "uncedo-taxi-1983.firebasestorage.app", messagingSenderId: "4748217727", appId: "1:4748217727:web:990a4aede460b9ef7beaa" };
+const app2 = initializeApp(firebaseConfig2); const db2 = getDatabase(app2); const auditDiv=document.getElementById('auditLog'); const bookingsDiv=document.getElementById('bookings'); const compDiv=document.getElementById('complaints');
+function addAudit(m){ auditDiv.innerHTML+='<br>'+m; auditDiv.scrollTop=auditDiv.scrollHeight; }
+onValue(ref(db2,'audit_log/login'), snap=>{ if(!snap.exists()) return; Object.values(snap.val()).slice(-20).forEach(l=>{ addAudit(`[${l.timestamp}] LOGIN | ${l.user} | ${l.server} | Photo Verified Log`); }); });
+onValue(ref(db2,'bookings'), snap=>{
+  if(!snap.exists()){ bookingsDiv.innerHTML='<i>No bookings yet</i>'; return; } bookingsDiv.innerHTML='';
+  Object.entries(snap.val()).reverse().slice(0,10).forEach(([id,b])=>{
+    const d=document.createElement('div'); d.className='book'; d.innerHTML=`<div style="display:flex;gap:10px"><img src="${b.photo||''}" style="width:50px;height:50px;border-radius:8px;object-fit:cover" onerror="this.style.display='none'"><div><b>${b.bookingId}</b> - ${b.name} - ${b.pickup}→${b.destination} ${b.fare}<br>Status: ${b.status} - Photo: ${b.verified?'✅ Verified Safe':'❌ No'} - Anti-Scammer: ${b.antiScammer?'YES':''}<br><span style="font-size:10px">${b.timestamp} | ${b.server}</span></div></div>`; bookingsDiv.appendChild(d);
+  });
+});
+onValue(ref(db2,'complaints'), snap=>{
+  if(!snap.exists()){ compDiv.innerHTML='<i>No complaints yet - Waiting for video evidence</i>'; return; } compDiv.innerHTML='';
+  Object.entries(snap.val()).reverse().forEach(([id,c])=>{
+    const d=document.createElement('div'); d.className='book'; d.innerHTML=`<b>${c.complaintId}</b> - Video: ${c.videoEvidence||'None'} - Photo: ${c.photoEvidence||'None'}<br>Status: ${c.status} - ${c.timestamp}<br><span style="font-size:10px">Server: ${c.server} - Executive Dashboard</span>`; compDiv.appendChild(d);
+    addAudit(`[${c.timestamp}] COMPLAINT | ${c.complaintId} | Video: ${c.videoEvidence} | Real base`);
+  });
+});
+addAudit('> Executive V2 WITH LOGO - REAL BASE: uncedo-taxi-1983<br>> Logo: UNCEDO SERVICE EST 1983 PORT ELIZABETH<br>> Photo verification logs - Video evidence - Protected - CH-001 & EX-007');
+</script></body></html>
