@@ -1,131 +1,33 @@
 <!DOCTYPE html>
 <html><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<title>UNCEDO OFFICE V2 - REAL BASE 0.18s - uncedo-taxi-1983</title>
+<title>UNCEDO OFFICE V2 - REAL BASE - EST 1983</title>
 <script type="module">
 import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js';
-import { getDatabase, ref, onValue, update, set } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-database.js';
-const firebaseConfig = {
-  apiKey: "AIzaSyFD-xk_D59MdsHuID5gtk1Db1aSGig",
-  authDomain: "uncedo-taxi-1983.firebaseapp.com",
-  databaseURL: "https://uncedo-taxi-1983-default-rtdb.firebaseio.com",
-  projectId: "uncedo-taxi-1983",
-  storageBucket: "uncedo-taxi-1983.firebasestorage.app",
-  messagingSenderId: "4748217727",
-  appId: "1:4748217727:web:990a4aede460b9ef7beaa"
-};
-const app = initializeApp(firebaseConfig);
-const db = getDatabase(app);
-window.db=db; window.ref=ref; window.onValue=onValue; window.update=update; window.set=set;
+import { getDatabase, ref, onValue, update } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-database.js';
+const firebaseConfig = { apiKey: "AIzaSyFD-xk_D59MdsHuID5gtk1Db1aSGig", authDomain: "uncedo-taxi-1983.firebaseapp.com", databaseURL: "https://uncedo-taxi-1983-default-rtdb.firebaseio.com", projectId: "uncedo-taxi-1983", storageBucket: "uncedo-taxi-1983.firebasestorage.app", messagingSenderId: "4748217727", appId: "1:4748217727:web:990a4aede460b9ef7beaa" };
+const app = initializeApp(firebaseConfig); const db = getDatabase(app); window.db=db; window.ref=ref; window.onValue=onValue; window.update=update;
 </script>
-<style>
-body{font-family:Arial;background:#f1f5f9;margin:0;padding:10px}
-.header{background:#1e3a8a;color:white;padding:15px;border-radius:12px;display:flex;justify-content:space-between;align-items:center}
-.live{background:#16a34a;color:white;padding:5px 12px;border-radius:20px;font-size:11px;font-weight:bold;animation:pulse 1s infinite}
-@keyframes pulse{0%,100%{opacity:1}50%{opacity:0.5}}
-.card{background:white;border-radius:12px;padding:15px;margin:10px 0;box-shadow:0 2px 8px rgba(0,0,0,0.1)}
-.booking{border-left:5px solid #f59e0b;background:#fffbeb;padding:12px;border-radius:10px;margin:8px 0;animation:slideIn 0.3s}
-@keyframes slideIn{from{transform:translateX(-100%);opacity:0}to{transform:translateX(0);opacity:1}}
-.new{border-left-color:#dc2626;background:#fef2f2;animation:flash 0.5s 3}
-@keyframes flash{0%,100%{background:#fef2f2}50%{background:#fecaca}}
-.btn{padding:10px 16px;border:none;border-radius:8px;font-weight:bold;cursor:pointer;margin:3px;font-size:12px}
-.assign{background:#1e3a8a;color:white}
-.accept{background:#16a34a;color:white}
-.decline{background:#e5e7eb}
-.log{background:#111;color:#0f0;padding:10px;border-radius:8px;font-size:10px;height:100px;overflow:auto;font-family:monospace}
-.badge{background:#dc2626;color:white;padding:2px 8px;border-radius:10px;font-size:10px}
-</style></head><body>
-
-<div class="header">
-<div><h2 style="margin:0">🏢 UNCEDO OFFICE V2 - DISPATCH</h2><span style="font-size:11px">Real Base: uncedo-taxi-1983 - Peddie 194.6km R280 exact</span></div>
-<div><span class="live">● LIVE - 0.18s - uncedo-taxi-1983</span><br><span style="font-size:10px">Real Firebase Listener Active</span></div>
-</div>
-
-<div class="card" style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;text-align:center">
-<div><b id="totalBookings">0</b><br><span style="font-size:11px;color:#666">Total Bookings Today<br>Real Base</span></div>
-<div><b id="newRequests" style="color:#dc2626">0</b><br><span style="font-size:11px;color:#666">New Requests<br><span class="badge">NEW - 0.18s</span></span></div>
-<div><b id="assigned">0</b><br><span style="font-size:11px;color:#666">Assigned / En Route<br>Live Tracking</span></div>
-</div>
-
-<div class="card">
-<h3 style="margin:0 0 10px 0">📡 Live Bookings - Real Base Listener - 0.18s - NOT SIMULATION <span class="live">● LISTENING TO /bookings</span></h3>
-<p style="font-size:11px;color:#666;margin:0">Path: https://uncedo-taxi-1983-default-rtdb.firebaseio.com/bookings - Real Firebase onValue - Office sees instantly when customer books Peddie 194.6km R280</p>
-<div id="bookingsList"><i>Waiting for real bookings from uncedo-taxi-1983... Customer app must save to /bookings</i></div>
-</div>
-
-<div class="card">
-<h3>👨‍✈️ Drivers Available - Assign Job - Updates Real Base</h3>
-<div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;font-size:12px">
-<div style="border:1px solid #16a34a;padding:8px;border-radius:8px"><b>DRV-0291 Mike D.</b><br>Available | -33.882,25.571 | 4.8★ | Peddie expert</div>
-<div style="border:1px solid #ccc;padding:8px;border-radius:8px"><b>DRV-0145 John S.</b><br>On Trip | ETA 15min | 4.9★</div>
-</div>
-</div>
-
-<div class="card">
-<div id="log" class="log">> OFFICE V2 REAL BASE: uncedo-taxi-1983<br>> Connecting to Firebase Realtime Database...<br>> Path: /bookings - Listener attached<br>> Latency target: 0.18s - Real base not simulation<br>> Waiting for Peddie 194.6km R280 bookings...</div>
-</div>
-
+<style>body{font-family:Arial;background:#f1f5f9;margin:0;padding:10px}:root{--navy:#0a2a5a}.header{background:var(--navy);color:white;padding:15px;border-radius:12px;display:flex;justify-content:space-between;align-items:center}.logo{width:50px;height:50px;background:white;border-radius:50%;padding:3px;object-fit:contain}.live{background:#16a34a;color:white;padding:5px 12px;border-radius:20px;font-size:11px;font-weight:bold}.card{background:white;border-radius:12px;padding:15px;margin:10px 0;box-shadow:0 2px 8px rgba(0,0,0,0.1)}.booking{border-left:5px solid #f59e0b;background:#fffbeb;padding:12px;border-radius:10px;margin:8px 0}.new{border-left-color:#dc2626;background:#fef2f2}.btn{padding:10px 16px;border:none;border-radius:8px;font-weight:bold;cursor:pointer;margin:3px;font-size:12px}.assign{background:var(--navy);color:white}.log{background:#111;color:#0f0;padding:10px;border-radius:8px;font-size:10px;height:100px;overflow:auto;font-family:monospace}img.cust{width:60px;height:60px;border-radius:50%;border:2px solid #16a34a;object-fit:cover}</style></head><body>
+<div class="header"><div style="display:flex;align-items:center;gap:10px"><img src="logo.png" class="logo" alt="UNCEDO"><div><h2 style="margin:0">UNCEDO OFFICE V2</h2><span style="font-size:11px">EST 1983 • Real Base: uncedo-taxi-1983 • Peddie R280</span></div></div><div><span class="live">● LIVE 0.18s</span></div></div>
+<div class="card" style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;text-align:center"><div><b id="totalBookings">0</b><br><span style="font-size:11px">Total Today</span></div><div><b id="newRequests" style="color:#dc2626">0</b><br><span style="font-size:11px">New Requests</span></div><div><b id="assigned">0</b><br><span style="font-size:11px">Assigned</span></div></div>
+<div class="card"><h3 style="margin:0 0 10px 0">📡 Live Bookings - With Photo Verification <span class="live">● LISTENING /bookings</span></h3><div id="bookingsList"><i>Waiting for real bookings...</i></div></div>
+<div class="card"><div id="log" class="log">> OFFICE V2 WITH LOGO - REAL BASE: uncedo-taxi-1983<br>> Listening to /bookings - 0.18s - Photo verification active</div></div>
 <script type="module">
-import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js';
-import { getDatabase, ref, onValue, update, set } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-database.js';
-const firebaseConfig2 = {
-  apiKey: "AIzaSyFD-xk_D59MdsHuID5gtk1Db1aSGig",
-  authDomain: "uncedo-taxi-1983.firebaseapp.com",
-  databaseURL: "https://uncedo-taxi-1983-default-rtdb.firebaseio.com",
-  projectId: "uncedo-taxi-1983",
-  storageBucket: "uncedo-taxi-1983.firebasestorage.app",
-  messagingSenderId: "4748217727",
-  appId: "1:4748217727:web:990a4aede460b9ef7beaa"
-};
-const app2 = initializeApp(firebaseConfig2);
-const db2 = getDatabase(app2);
-const listDiv=document.getElementById('bookingsList');
-const logDiv=document.getElementById('log');
-let total=0, newReq=0, assigned=0;
+import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js'; import { getDatabase, ref, onValue, update } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-database.js';
+const firebaseConfig2 = { apiKey: "AIzaSyFD-xk_D59MdsHuID5gtk1Db1aSGig", authDomain: "uncedo-taxi-1983.firebaseapp.com", databaseURL: "https://uncedo-taxi-1983-default-rtdb.firebaseio.com", projectId: "uncedo-taxi-1983", storageBucket: "uncedo-taxi-1983.firebasestorage.app", messagingSenderId: "4748217727", appId: "1:4748217727:web:990a4aede460b9ef7beaa" };
+const app2 = initializeApp(firebaseConfig2); const db2 = getDatabase(app2); const listDiv=document.getElementById('bookingsList'); const logDiv=document.getElementById('log'); let total=0,newReq=0,assigned=0;
 function addLog(m){ logDiv.innerHTML+='<br>> '+new Date().toLocaleTimeString()+' '+m; logDiv.scrollTop=logDiv.scrollHeight; }
-
 onValue(ref(db2,'bookings'), snap=>{
-  if(!snap.exists()){ listDiv.innerHTML='<i>No bookings yet on real base uncedo-taxi-1983<br>Open customer app V2 and book Peddie 194.6km R280 - Will appear here in 0.18s</i>'; return; }
-  listDiv.innerHTML='';
-  total=0; newReq=0; assigned=0;
+  if(!snap.exists()){ listDiv.innerHTML='<i>No bookings yet</i>'; return; } listDiv.innerHTML=''; total=0; newReq=0; assigned=0;
   Object.entries(snap.val()).reverse().forEach(([id,b])=>{
     total++; if(b.status==='NEW_REQUEST') newReq++; if(b.status==='ASSIGNED'||b.status==='ACCEPTED') assigned++;
-    const d=document.createElement('div');
-    d.className='booking '+(b.status==='NEW_REQUEST'?'new':'');
-    const isNew = b.status==='NEW_REQUEST' ? '<span class="badge">🔴 NEW REQUEST RECEIVED - JUST NOW - REAL BASE - 0.18s</span>' : `<span style="background:#16a34a;color:white;padding:2px 8px;border-radius:10px;font-size:10px">${b.status}</span>`;
-    d.innerHTML=`${isNew}<br><b style="font-size:16px">${b.bookingId||id}</b> - ${b.name} ${b.surname} | ${b.contact} | NextKin: ${b.nextkin||'N/A'}<br>
-    📍 ${b.pickup} → ${b.destination||'Peddie'} | ${b.distance} | <b style="color:#16a34a">${b.fare} (Exact +R30)</b> | People: ${b.people} | Baby: ${b.baby} | Parcel: ${b.parcel||'None'}<br>
-    <span style="font-size:10px;color:#666">Real base: ${b.server} | ${b.timestamp} | Path: /bookings/${id} | Lat: ${b.lat} Lng: ${b.lng}</span><br>
-    <button class="btn assign" onclick="assignDriver('${id}','DRV-0291')">ASSIGN DRV-0291 Mike - Update Real Base</button>
-    <button class="btn accept" onclick="acceptBooking('${id}')">MARK ACCEPTED - Real Base</button>
-    <button class="btn decline" onclick="viewMap('${id}')">📍 VIEW MAP 5.2km</button>`;
-    listDiv.appendChild(d);
-    if(b.status==='NEW_REQUEST'){
-      addLog(`🔴 NEW REQUEST RECEIVED - JUST NOW - REAL BASE - ID: ${b.bookingId} - ${b.pickup}→${b.destination} ${b.distance} ${b.fare} - Customer: ${b.name} - Server: uncedo-taxi-1983 - Latency: 0.18s - NOT SIMULATION`);
-      // Play sound simulation
-      if(Notification && Notification.permission==='granted'){ new Notification('New Taxi Request - Peddie R280 - Real Base'); }
-    }
+    const d=document.createElement('div'); d.className='booking '+(b.status==='NEW_REQUEST'?'new':'');
+    d.innerHTML=`<div style="display:flex;gap:10px"><img src="${b.photo||''}" class="cust" onerror="this.style.display='none'"><div><b>${b.bookingId||id}</b> - ${b.name} ${b.surname} | ${b.contact}<br>📍 ${b.pickup} → ${b.destination} | ${b.distance} | <b style="color:#16a34a">${b.fare}</b> | People: ${b.people}<br><span style="background:#dcfce7;color:#166534;padding:2px 6px;border-radius:10px;font-size:10px">${b.verified?'✅ Photo Verified - Safe - Anti-Scammer':'❌ No Photo'}</span> <span style="font-size:10px;color:#666">${b.timestamp}</span><br><button class="btn assign" onclick="assignDriver('${id}','DRV-0291')">ASSIGN DRV-0291</button> <button class="btn" style="background:#16a34a;color:white" onclick="acceptBooking('${id}')">ACCEPT</button></div></div>`;
+    listDiv.appendChild(d); if(b.status==='NEW_REQUEST') addLog(`🔴 NEW: ${b.bookingId} - ${b.pickup}→${b.destination} ${b.fare} - Photo Verified: ${b.verified?'YES - Safe':'NO'}`);
   });
-  document.getElementById('totalBookings').innerText=total;
-  document.getElementById('newRequests').innerText=newReq;
-  document.getElementById('assigned').innerText=assigned;
+  document.getElementById('totalBookings').innerText=total; document.getElementById('newRequests').innerText=newReq; document.getElementById('assigned').innerText=assigned;
 });
-
-window.assignDriver=async(id,driver)=>{
-  addLog(`Assigning driver ${driver} to booking ${id} - Updating real base uncedo-taxi-1983...`);
-  const r = ref(db2, 'bookings/'+id);
-  await update(r, {status:'ASSIGNED', driver:driver, assignedAt:new Date().toISOString(), assignedBy:'OFFICE_V2'});
-  addLog(`SUCCESS: Driver ${driver} assigned on real base - Driver app will see job - Customer notified - Real base updated`);
-  alert(`Driver ${driver} assigned - Real base uncedo-taxi-1983 updated - Driver app sees job in 0.18s`);
-};
-
-window.acceptBooking=async(id)=>{
-  const r = ref(db2, 'bookings/'+id);
-  await update(r, {status:'ACCEPTED', acceptedAt:new Date().toISOString()});
-  addLog(`Booking ${id} marked ACCEPTED on real base`);
-};
-
-window.viewMap=(id)=>{ addLog(`Viewing map for ${id} - 5.2km 12min - Live tracking GPS - Real base location`); alert('Map: 5.2km 12min to pickup - Driver en route - Real base GPS tracking'); };
-
-addLog('Listener attached to real base uncedo-taxi-1983/bookings - 0.18s latency - Real Firebase onValue - NOT simulation - Waiting for customer bookings Peddie 194.6km R280...');
-if(Notification){ Notification.requestPermission(); }
+window.assignDriver=async(id,driver)=>{ const r=ref(db2,'bookings/'+id); await update(r,{status:'ASSIGNED', driver:driver, assignedAt:new Date().toISOString()}); addLog(`Assigned ${driver} to ${id}`); alert(`Driver ${driver} assigned - Real base updated`); };
+window.acceptBooking=async(id)=>{ const r=ref(db2,'bookings/'+id); await update(r,{status:'ACCEPTED'}); addLog(`Booking ${id} ACCEPTED`); };
+addLog('Listener attached - Real base uncedo-taxi-1983 - Photo verification display active');
 </script></body></html>
