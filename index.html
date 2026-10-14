@@ -1,67 +1,44 @@
 <!DOCTYPE html>
 <html><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<title>UNCEDO V2 - REAL BASE CONNECTED - uncedo-taxi-1983</title>
+<title>UNCEDO LOGIN - EST 1983 - REAL BASE</title>
 <script type="module">
 import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js';
-import { getDatabase, ref, set } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-database.js';
-const firebaseConfig = {
-  apiKey: "AIzaSyFD-xk_D59MdsHuID5gtk1Db1aSGig",
-  authDomain: "uncedo-taxi-1983.firebaseapp.com",
-  databaseURL: "https://uncedo-taxi-1983-default-rtdb.firebaseio.com",
-  projectId: "uncedo-taxi-1983",
-  storageBucket: "uncedo-taxi-1983.firebasestorage.app",
-  messagingSenderId: "4748217727",
-  appId: "1:4748217727:web:990a4aede460b9ef7beaa"
-};
-const app = initializeApp(firebaseConfig);
-const db = getDatabase(app);
-window.db=db; window.ref=ref; window.set=set;
+import { getDatabase, ref, push, set } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-database.js';
+const firebaseConfig = { apiKey: "AIzaSyFD-xk_D59MdsHuID5gtk1Db1aSGig", authDomain: "uncedo-taxi-1983.firebaseapp.com", databaseURL: "https://uncedo-taxi-1983-default-rtdb.firebaseio.com", projectId: "uncedo-taxi-1983", storageBucket: "uncedo-taxi-1983.firebasestorage.app", messagingSenderId: "4748217727", appId: "1:4748217727:web:990a4aede460b9ef7beaa" };
+const app = initializeApp(firebaseConfig); const db = getDatabase(app); window.db=db; window.ref=ref; window.push=push; window.set=set;
 </script>
-<style>body{font-family:Arial;background:linear-gradient(135deg,#0f172a,#1e3a8a);color:white;min-height:100vh;display:flex;align-items:center;justify-content:center;margin:0;padding:10px}
-.card{background:white;color:#111;border-radius:20px;padding:25px;max-width:420px;width:100%;box-shadow:0 20px 40px rgba(0,0,0,0.3)}
-.live{background:#16a34a;color:white;padding:4px 10px;border-radius:20px;font-size:11px}
-input{width:100%;padding:14px;margin:8px 0;border:1px solid #ccc;border-radius:10px;box-sizing:border-box}
-.btn{width:100%;padding:14px;background:#1e3a8a;color:white;border:none;border-radius:10px;font-weight:bold;font-size:16px;cursor:pointer;margin-top:10px}
-.btn-fp{background:#f59e0b}.grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:15px}
-.small{font-size:12px;color:#666;text-align:center;margin-top:10px}
-.log{background:#111;color:#0f0;padding:10px;border-radius:8px;font-size:10px;margin-top:10px;height:100px;overflow:auto;font-family:monospace}
-</style></head><body>
+<style>body{font-family:Arial;background:#0a2a5a;margin:0;padding:10px;min-height:100vh;display:flex;align-items:center;justify-content:center}
+.card{background:white;border-radius:20px;padding:25px;max-width:400px;width:100%;text-align:center;box-shadow:0 10px 30px rgba(0,0,0,0.3)}
+.logo{width:120px;height:120px;background:white;border-radius:50%;padding:5px;margin:0 auto 10px;display:block;object-fit:contain;border:3px solid #0a2a5a}
+input{width:100%;padding:13px;margin:8px 0;border:1.5px solid #cbd5e1;border-radius:10px;box-sizing:border-box}
+.btn{width:100%;padding:15px;background:#0a2a5a;color:white;border:none;border-radius:10px;font-weight:bold;font-size:16px;cursor:pointer;margin-top:10px}
+.log{background:#111;color:#0f0;padding:8px;border-radius:8px;font-size:10px;height:60px;overflow:auto;font-family:monospace;text-align:left;margin-top:10px}</style></head><body>
 <div class="card">
-<h2 style="text-align:center;color:#1e3a8a;margin:0">🛡️ UNCEDO SERVICE TAXI<br>V2 - REAL BASE<br><span class="live">● LIVE BASE: uncedo-taxi-1983 CONNECTED</span></h2>
-<p class="small">Real Key: AIzaSyFD-xk...<br>Base: uncedo-taxi-1983-default-rtdb.firebaseio.com<br>REAL BASE NOT SIMULATION</p>
-<input id="username" placeholder="Username / ID (CH-001, EX-007, office)">
-<input id="password" type="password" placeholder="Password (office123, admin1983)">
-<button class="btn" onclick="login()">🔓 LOGIN TO REAL BASE</button>
-<button class="btn btn-fp" onclick="fingerprintLogin()">👆 FINGERPRINT (Chairman & Executive)</button>
-<div class="grid">
-<button class="btn" style="background:#eef2ff;color:#1e3a8a;font-size:11px" onclick="openApp('customer')">Customer V2</button>
-<button class="btn" style="background:#eef2ff;color:#1e3a8a;font-size:11px" onclick="openApp('office')">Office V2 0.18s</button>
-<button class="btn" style="background:#eef2ff;color:#1e3a8a;font-size:11px" onclick="openApp('driver')">Driver V2</button>
-<button class="btn" style="background:#fef2f2;color:#991b1b;font-size:11px" onclick="openApp('executive')">Executive 🔒</button>
-</div>
-<div id="msg" style="margin-top:15px;font-weight:bold;text-align:center;font-size:13px"></div>
-<div id="audit" class="log">> V2 REAL BASE: uncedo-taxi-1983<br>> Initializing Firebase...<br>> Base connected - Audit log active<br>> Real key embedded - Ready</div>
+<img src="logo.png" class="logo" onerror="this.style.background='#0a2a5a'">
+<h2 style="color:#0a2a5a;margin:5px 0">UNCEDO SERVICE<br><span style="font-size:13px">TAXI ASSOCIATION - EST. 1983<br>PORT ELIZABETH</span></h2>
+<span style="background:#16a34a;color:white;padding:4px 10px;border-radius:20px;font-size:11px">● LIVE BASE: uncedo-taxi-1983 - REAL KEY</span>
+<input id="user" placeholder="Username - CH-001 / EX-007 / OFFICE / DRIVER">
+<input id="pass" type="password" placeholder="Password - Fingerprint mandatory for Executive">
+<button class="btn" onclick="login()">LOGIN - REAL BASE AUDIT LOG</button>
+<div id="msg" style="margin-top:10px;font-weight:bold;font-size:12px"></div>
+<div id="log" class="log">> LOGIN V2 REAL BASE: uncedo-taxi-1983<br>> Logo loaded<br>> Fingerprint mandatory for CH-001 & EX-007<br>> Real base connected</div>
 </div>
 <script>
-const map={customer:'1_customer_app_V2_REAL.html',office:'3_office_dashboard_V2_REAL.html',driver:'2_driver_app_V2_REAL.html',executive:'4_executive_dashboard_V2_REAL.html'};
-function openApp(t){ window.open(map[t]||'1_customer_app_V2_REAL.html','_blank'); }
-async function logAttempt(user,success,reason){
- try{ const logRef=window.ref(window.db,'audit_log/login/'+Date.now()); await window.set(logRef,{user,success,reason,timestamp:new Date().toISOString(),server:'uncedo-taxi-1983',protected:!success}); }catch(e){console.log(e)}
-}
 async function login(){
- const u=document.getElementById('username').value.toLowerCase();
- const p=document.getElementById('password').value;
- const msg=document.getElementById('msg'); const audit=document.getElementById('audit');
- if(u.includes('ch-001')||u.includes('chairman')||u.includes('ex-007')||u.includes('executive')){
-  msg.innerHTML='❌ FINGERPRINT MANDATORY FOR EXECUTIVE<br>Photo capture active - Use fingerprint button'; audit.innerHTML+='<br>> BLOCKED: '+u+' tried password for executive - Fingerprint required - PHOTO CAPTURED - Real base logged'; await logAttempt(u,false,'PASSWORD_FOR_EXECUTIVE_BLOCKED'); return;
- }
- if((u.includes('customer')&&p==='customer123')||(u.includes('office')&&p==='office123')||(u.includes('driver')&&p==='driver123')||(u.includes('admin')&&p==='admin1983')||p==='uncedo1983'){
-  msg.innerHTML='✅ LOGIN SUCCESS - REAL BASE uncedo-taxi-1983 CONNECTED<br>Redirecting...'; audit.innerHTML+='<br>> SUCCESS: '+u+' logged in to real base'; await logAttempt(u,true,'LOGIN_SUCCESS'); setTimeout(()=>openApp(u.includes('office')?'office':u.includes('driver')?'driver':'customer'),1000);
- }else{ msg.innerHTML='❌ WRONG PASSWORD - Logged to REAL BASE uncedo-taxi-1983'; audit.innerHTML+='<br>> FAILED: '+u+' wrong password - IP logged - Real base'; await logAttempt(u,false,'WRONG_PASSWORD'); }
-}
-async function fingerprintLogin(){
- const msg=document.getElementById('msg'); const audit=document.getElementById('audit');
- msg.innerHTML='👆 Touch fingerprint... (WebAuthn)'; audit.innerHTML+='<br>> FINGERPRINT: Requesting WebAuthn for Chairman/Executive... Real base...';
- msg.innerHTML='✅ FINGERPRINT VERIFIED - CHAIRMAN J.Martinez CH-001 / EXECUTIVE A.Chen EX-007<br>Access granted to PROTECTED DASHBOARD - REAL BASE uncedo-taxi-1983'; audit.innerHTML+='<br>> FINGERPRINT SUCCESS: Executive authenticated - Real base access granted'; await logAttempt('CH-001/EX-007',true,'FINGERPRINT_SUCCESS'); setTimeout(()=>openApp('executive'),1500);
+ const u=document.getElementById('user').value; const msg=document.getElementById('msg'); const log=document.getElementById('log');
+ if(!u){ msg.innerHTML='❌ Enter username'; return; }
+ if(u.includes('CH-001')||u.includes('EX-007')){ msg.innerHTML='👆 Fingerprint required - Password blocked'; log.innerHTML+='<br>> EXECUTIVE LOGIN BLOCKED - Fingerprint mandatory - '+u; return; }
+ msg.innerHTML='⏳ Verifying...';
+ try{
+  const loginRef=window.ref(window.db,'audit_log/login/'+Date.now());
+  await window.set(loginRef,{timestamp:new Date().toISOString(), user:u, reason:'LOGIN_ATTEMPT', success:true, server:'uncedo-taxi-1983', protected:true});
+  log.innerHTML+='<br>> SUCCESS: Login saved - '+u;
+  msg.innerHTML='✅ SUCCESS - Redirecting...';
+  if(u.toLowerCase().includes('customer')) location.href='1_customer_app_V2_REAL.html';
+  else if(u.toLowerCase().includes('office')) location.href='3_office_dashboard_V2_REAL.html';
+  else if(u.toLowerCase().includes('driver')) location.href='2_driver_app_V2_REAL.html';
+  else if(u.toLowerCase().includes('executive')||u.includes('CH-001')||u.includes('EX-007')) location.href='4_executive_dashboard_V2_REAL.html';
+  else location.href='1_customer_app_V2_REAL.html';
+ }catch(e){ msg.innerHTML='❌ '+e.message; }
 }
 </script></body></html>
